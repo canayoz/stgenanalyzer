@@ -1,0 +1,2248 @@
+#ifndef ANALYZER_H
+#define ANALYZER_H
+//-----------------------------------------------------------------------------
+// File:        analyzer.h
+// Description: Analyzer header for ntuples created by TheNtupleMaker
+// Created:     Wed Jul  9 15:54:37 2014 by mkanalyzer.py
+// Author:      Halil Gamsizkan
+//-----------------------------------------------------------------------------
+// -- System
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <map>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <cassert>
+#include <cmath>
+
+#include "analyzerutil.h"
+#include "treestream.h"
+#include "pdg.h"
+
+// -- Root
+
+#include "TROOT.h"
+#include "TApplication.h"
+#include "TDirectory.h"
+#include "TCanvas.h"
+#include "TFile.h"
+#include "TKey.h"
+#include "TH1F.h"
+#include "TH2F.h"
+
+namespace evt {
+//-----------------------------------------------------------------------------
+// --- Declare variables
+//-----------------------------------------------------------------------------
+std::vector<float>	GenJet_auxiliaryEnergy(200,0);
+std::vector<int>	GenJet_charge(200,0);
+std::vector<float>	GenJet_constituentEtaPhiSpread(200,0);
+std::vector<float>	GenJet_constituentPtDistribution(200,0);
+std::vector<float>	GenJet_emEnergy(200,0);
+std::vector<double>	GenJet_energy(200,0);
+std::vector<double>	GenJet_et(200,0);
+std::vector<double>	GenJet_eta(200,0);
+std::vector<float>	GenJet_etaetaMoment(200,0);
+std::vector<float>	GenJet_etaphiMoment(200,0);
+std::vector<float>	GenJet_hadEnergy(200,0);
+std::vector<int>	GenJet_hasMasterClone(200,0);
+std::vector<int>	GenJet_hasMasterClonePtr(200,0);
+std::vector<float>	GenJet_invisibleEnergy(200,0);
+std::vector<int>	GenJet_isCaloMuon(200,0);
+std::vector<int>	GenJet_isConvertedPhoton(200,0);
+std::vector<int>	GenJet_isElectron(200,0);
+std::vector<int>	GenJet_isGlobalMuon(200,0);
+std::vector<int>	GenJet_isJet(200,0);
+std::vector<int>	GenJet_isMuon(200,0);
+std::vector<int>	GenJet_isPhoton(200,0);
+std::vector<int>	GenJet_isStandAloneMuon(200,0);
+std::vector<int>	GenJet_isTrackerMuon(200,0);
+std::vector<float>	GenJet_jetArea(200,0);
+std::vector<int>	GenJet_longLived(200,0);
+std::vector<double>	GenJet_mass(200,0);
+std::vector<int>	GenJet_massConstraint(200,0);
+std::vector<double>	GenJet_massSqr(200,0);
+std::vector<float>	GenJet_maxDistance(200,0);
+std::vector<double>	GenJet_mt(200,0);
+std::vector<double>	GenJet_mtSqr(200,0);
+std::vector<int>	GenJet_nConstituents(200,0);
+std::vector<int>	GenJet_nPasses(200,0);
+std::vector<size_t>	GenJet_numberOfDaughters(200,0);
+std::vector<size_t>	GenJet_numberOfMothers(200,0);
+std::vector<size_t>	GenJet_numberOfSourceCandidatePtrs(200,0);
+std::vector<double>	GenJet_p(200,0);
+std::vector<int>	GenJet_pdgId(200,0);
+std::vector<double>	GenJet_phi(200,0);
+std::vector<float>	GenJet_phiphiMoment(200,0);
+std::vector<float>	GenJet_pileup(200,0);
+std::vector<double>	GenJet_pt(200,0);
+std::vector<double>	GenJet_px(200,0);
+std::vector<double>	GenJet_py(200,0);
+std::vector<double>	GenJet_pz(200,0);
+std::vector<double>	GenJet_rapidity(200,0);
+std::vector<int>	GenJet_status(200,0);
+std::vector<double>	GenJet_theta(200,0);
+std::vector<int>	GenJet_threeCharge(200,0);
+std::vector<double>	GenJet_vertexChi2(200,0);
+std::vector<double>	GenJet_vertexNdof(200,0);
+std::vector<double>	GenJet_vertexNormalizedChi2(200,0);
+std::vector<double>	GenJet_vx(200,0);
+std::vector<double>	GenJet_vy(200,0);
+std::vector<double>	GenJet_vz(200,0);
+std::vector<double>	GenJet_y(200,0);
+std::vector<double>	GenMET_ChargedEMEt(200,0);
+std::vector<double>	GenMET_ChargedEMEtFraction(200,0);
+std::vector<double>	GenMET_ChargedHadEt(200,0);
+std::vector<double>	GenMET_ChargedHadEtFraction(200,0);
+std::vector<double>	GenMET_InvisibleEt(200,0);
+std::vector<double>	GenMET_InvisibleEtFraction(200,0);
+std::vector<double>	GenMET_MuonEt(200,0);
+std::vector<double>	GenMET_MuonEtFraction(200,0);
+std::vector<double>	GenMET_NeutralEMEt(200,0);
+std::vector<double>	GenMET_NeutralEMEtFraction(200,0);
+std::vector<double>	GenMET_NeutralHadEt(200,0);
+std::vector<double>	GenMET_NeutralHadEtFraction(200,0);
+std::vector<double>	GenMET_auxiliaryEnergy(200,0);
+std::vector<int>	GenMET_charge(200,0);
+std::vector<double>	GenMET_e_longitudinal(200,0);
+std::vector<double>	GenMET_emEnergy(200,0);
+std::vector<double>	GenMET_energy(200,0);
+std::vector<double>	GenMET_et(200,0);
+std::vector<double>	GenMET_eta(200,0);
+std::vector<double>	GenMET_hadEnergy(200,0);
+std::vector<int>	GenMET_hasMasterClone(200,0);
+std::vector<int>	GenMET_hasMasterClonePtr(200,0);
+std::vector<double>	GenMET_invisibleEnergy(200,0);
+std::vector<int>	GenMET_isCaloMuon(200,0);
+std::vector<int>	GenMET_isConvertedPhoton(200,0);
+std::vector<int>	GenMET_isElectron(200,0);
+std::vector<int>	GenMET_isGlobalMuon(200,0);
+std::vector<int>	GenMET_isJet(200,0);
+std::vector<int>	GenMET_isMuon(200,0);
+std::vector<int>	GenMET_isPhoton(200,0);
+std::vector<int>	GenMET_isStandAloneMuon(200,0);
+std::vector<int>	GenMET_isTrackerMuon(200,0);
+std::vector<int>	GenMET_longLived(200,0);
+std::vector<double>	GenMET_mEtSig(200,0);
+std::vector<double>	GenMET_mass(200,0);
+std::vector<int>	GenMET_massConstraint(200,0);
+std::vector<double>	GenMET_massSqr(200,0);
+std::vector<double>	GenMET_mt(200,0);
+std::vector<double>	GenMET_mtSqr(200,0);
+std::vector<size_t>	GenMET_numberOfDaughters(200,0);
+std::vector<size_t>	GenMET_numberOfMothers(200,0);
+std::vector<size_t>	GenMET_numberOfSourceCandidatePtrs(200,0);
+std::vector<size_t>	GenMET_numberOfTracks(200,0);
+std::vector<double>	GenMET_p(200,0);
+std::vector<int>	GenMET_pdgId(200,0);
+std::vector<double>	GenMET_phi(200,0);
+std::vector<double>	GenMET_pt(200,0);
+std::vector<double>	GenMET_px(200,0);
+std::vector<double>	GenMET_py(200,0);
+std::vector<double>	GenMET_pz(200,0);
+std::vector<double>	GenMET_rapidity(200,0);
+std::vector<double>	GenMET_significance(200,0);
+std::vector<int>	GenMET_status(200,0);
+std::vector<double>	GenMET_sumEt(200,0);
+std::vector<double>	GenMET_theta(200,0);
+std::vector<int>	GenMET_threeCharge(200,0);
+std::vector<double>	GenMET_vertexChi2(200,0);
+std::vector<double>	GenMET_vertexNdof(200,0);
+std::vector<double>	GenMET_vertexNormalizedChi2(200,0);
+std::vector<double>	GenMET_vx(200,0);
+std::vector<double>	GenMET_vy(200,0);
+std::vector<double>	GenMET_vz(200,0);
+std::vector<double>	GenMET_y(200,0);
+std::vector<int>	GenParticle_charge(4000,0);
+std::vector<int>	GenParticle_collisionId(4000,0);
+std::vector<double>	GenParticle_energy(4000,0);
+std::vector<double>	GenParticle_et(4000,0);
+std::vector<double>	GenParticle_eta(4000,0);
+std::vector<int>	GenParticle_hasMasterClone(4000,0);
+std::vector<int>	GenParticle_hasMasterClonePtr(4000,0);
+std::vector<int>	GenParticle_isCaloMuon(4000,0);
+std::vector<int>	GenParticle_isConvertedPhoton(4000,0);
+std::vector<int>	GenParticle_isElectron(4000,0);
+std::vector<int>	GenParticle_isGlobalMuon(4000,0);
+std::vector<int>	GenParticle_isJet(4000,0);
+std::vector<int>	GenParticle_isMuon(4000,0);
+std::vector<int>	GenParticle_isPhoton(4000,0);
+std::vector<int>	GenParticle_isStandAloneMuon(4000,0);
+std::vector<int>	GenParticle_isTrackerMuon(4000,0);
+std::vector<int>	GenParticle_longLived(4000,0);
+std::vector<double>	GenParticle_mass(4000,0);
+std::vector<int>	GenParticle_massConstraint(4000,0);
+std::vector<double>	GenParticle_massSqr(4000,0);
+std::vector<double>	GenParticle_mt(4000,0);
+std::vector<double>	GenParticle_mtSqr(4000,0);
+std::vector<size_t>	GenParticle_numberOfDaughters(4000,0);
+std::vector<size_t>	GenParticle_numberOfMothers(4000,0);
+std::vector<size_t>	GenParticle_numberOfSourceCandidatePtrs(4000,0);
+std::vector<double>	GenParticle_p(4000,0);
+std::vector<int>	GenParticle_pdgId(4000,0);
+std::vector<double>	GenParticle_phi(4000,0);
+std::vector<double>	GenParticle_pt(4000,0);
+std::vector<double>	GenParticle_px(4000,0);
+std::vector<double>	GenParticle_py(4000,0);
+std::vector<double>	GenParticle_pz(4000,0);
+std::vector<double>	GenParticle_rapidity(4000,0);
+std::vector<int>	GenParticle_status(4000,0);
+std::vector<double>	GenParticle_theta(4000,0);
+std::vector<int>	GenParticle_threeCharge(4000,0);
+std::vector<double>	GenParticle_vertexChi2(4000,0);
+std::vector<double>	GenParticle_vertexNdof(4000,0);
+std::vector<double>	GenParticle_vertexNormalizedChi2(4000,0);
+std::vector<double>	GenParticle_vx(4000,0);
+std::vector<double>	GenParticle_vy(4000,0);
+std::vector<double>	GenParticle_vz(4000,0);
+std::vector<double>	GenParticle_y(4000,0);
+std::vector<float>	PFJet_HFEMEnergy(200,0);
+std::vector<float>	PFJet_HFEMEnergyFraction(200,0);
+std::vector<int>	PFJet_HFEMMultiplicity(200,0);
+std::vector<float>	PFJet_HFHadronEnergy(200,0);
+std::vector<float>	PFJet_HFHadronEnergyFraction(200,0);
+std::vector<int>	PFJet_HFHadronMultiplicity(200,0);
+std::vector<int>	PFJet_charge(200,0);
+std::vector<float>	PFJet_chargedEmEnergy(200,0);
+std::vector<float>	PFJet_chargedEmEnergyFraction(200,0);
+std::vector<float>	PFJet_chargedHadronEnergy(200,0);
+std::vector<float>	PFJet_chargedHadronEnergyFraction(200,0);
+std::vector<int>	PFJet_chargedHadronMultiplicity(200,0);
+std::vector<float>	PFJet_chargedMuEnergy(200,0);
+std::vector<float>	PFJet_chargedMuEnergyFraction(200,0);
+std::vector<int>	PFJet_chargedMultiplicity(200,0);
+std::vector<float>	PFJet_constituentEtaPhiSpread(200,0);
+std::vector<float>	PFJet_constituentPtDistribution(200,0);
+std::vector<float>	PFJet_electronEnergy(200,0);
+std::vector<float>	PFJet_electronEnergyFraction(200,0);
+std::vector<int>	PFJet_electronMultiplicity(200,0);
+std::vector<double>	PFJet_energy(200,0);
+std::vector<double>	PFJet_et(200,0);
+std::vector<double>	PFJet_eta(200,0);
+std::vector<float>	PFJet_etaetaMoment(200,0);
+std::vector<float>	PFJet_etaphiMoment(200,0);
+std::vector<int>	PFJet_hasMasterClone(200,0);
+std::vector<int>	PFJet_hasMasterClonePtr(200,0);
+std::vector<int>	PFJet_isCaloMuon(200,0);
+std::vector<int>	PFJet_isConvertedPhoton(200,0);
+std::vector<int>	PFJet_isElectron(200,0);
+std::vector<int>	PFJet_isGlobalMuon(200,0);
+std::vector<int>	PFJet_isJet(200,0);
+std::vector<int>	PFJet_isMuon(200,0);
+std::vector<int>	PFJet_isPhoton(200,0);
+std::vector<int>	PFJet_isStandAloneMuon(200,0);
+std::vector<int>	PFJet_isTrackerMuon(200,0);
+std::vector<float>	PFJet_jetArea(200,0);
+std::vector<int>	PFJet_longLived(200,0);
+std::vector<double>	PFJet_mass(200,0);
+std::vector<int>	PFJet_massConstraint(200,0);
+std::vector<double>	PFJet_massSqr(200,0);
+std::vector<float>	PFJet_maxDistance(200,0);
+std::vector<double>	PFJet_mt(200,0);
+std::vector<double>	PFJet_mtSqr(200,0);
+std::vector<float>	PFJet_muonEnergy(200,0);
+std::vector<float>	PFJet_muonEnergyFraction(200,0);
+std::vector<int>	PFJet_muonMultiplicity(200,0);
+std::vector<int>	PFJet_nConstituents(200,0);
+std::vector<int>	PFJet_nPasses(200,0);
+std::vector<float>	PFJet_neutralEmEnergy(200,0);
+std::vector<float>	PFJet_neutralEmEnergyFraction(200,0);
+std::vector<float>	PFJet_neutralHadronEnergy(200,0);
+std::vector<float>	PFJet_neutralHadronEnergyFraction(200,0);
+std::vector<int>	PFJet_neutralHadronMultiplicity(200,0);
+std::vector<int>	PFJet_neutralMultiplicity(200,0);
+std::vector<size_t>	PFJet_numberOfDaughters(200,0);
+std::vector<size_t>	PFJet_numberOfMothers(200,0);
+std::vector<size_t>	PFJet_numberOfSourceCandidatePtrs(200,0);
+std::vector<double>	PFJet_p(200,0);
+std::vector<int>	PFJet_pdgId(200,0);
+std::vector<double>	PFJet_phi(200,0);
+std::vector<float>	PFJet_phiphiMoment(200,0);
+std::vector<float>	PFJet_photonEnergy(200,0);
+std::vector<float>	PFJet_photonEnergyFraction(200,0);
+std::vector<int>	PFJet_photonMultiplicity(200,0);
+std::vector<float>	PFJet_pileup(200,0);
+std::vector<double>	PFJet_pt(200,0);
+std::vector<double>	PFJet_px(200,0);
+std::vector<double>	PFJet_py(200,0);
+std::vector<double>	PFJet_pz(200,0);
+std::vector<double>	PFJet_rapidity(200,0);
+std::vector<int>	PFJet_status(200,0);
+std::vector<double>	PFJet_theta(200,0);
+std::vector<int>	PFJet_threeCharge(200,0);
+std::vector<double>	PFJet_vertexChi2(200,0);
+std::vector<double>	PFJet_vertexNdof(200,0);
+std::vector<double>	PFJet_vertexNormalizedChi2(200,0);
+std::vector<double>	PFJet_vx(200,0);
+std::vector<double>	PFJet_vy(200,0);
+std::vector<double>	PFJet_vz(200,0);
+std::vector<double>	PFJet_y(200,0);
+std::vector<double>	PFMET_ChargedEMEt(200,0);
+std::vector<double>	PFMET_ChargedEMEtFraction(200,0);
+std::vector<double>	PFMET_ChargedEMFraction(200,0);
+std::vector<double>	PFMET_ChargedHadEt(200,0);
+std::vector<double>	PFMET_ChargedHadEtFraction(200,0);
+std::vector<double>	PFMET_ChargedHadFraction(200,0);
+std::vector<double>	PFMET_HFEMEt(200,0);
+std::vector<double>	PFMET_HFEMEtFraction(200,0);
+std::vector<double>	PFMET_HFHadronEt(200,0);
+std::vector<double>	PFMET_HFHadronEtFraction(200,0);
+std::vector<double>	PFMET_MuonEt(200,0);
+std::vector<double>	PFMET_MuonEtFraction(200,0);
+std::vector<double>	PFMET_MuonFraction(200,0);
+std::vector<double>	PFMET_NeutralEMEt(200,0);
+std::vector<double>	PFMET_NeutralEMEtFraction(200,0);
+std::vector<double>	PFMET_NeutralEMFraction(200,0);
+std::vector<double>	PFMET_NeutralHadEt(200,0);
+std::vector<double>	PFMET_NeutralHadEtFraction(200,0);
+std::vector<double>	PFMET_NeutralHadFraction(200,0);
+std::vector<double>	PFMET_Type6Et(200,0);
+std::vector<double>	PFMET_Type6EtFraction(200,0);
+std::vector<double>	PFMET_Type7Et(200,0);
+std::vector<double>	PFMET_Type7EtFraction(200,0);
+std::vector<int>	PFMET_charge(200,0);
+std::vector<double>	PFMET_chargedHadronEt(200,0);
+std::vector<double>	PFMET_chargedHadronEtFraction(200,0);
+std::vector<double>	PFMET_e_longitudinal(200,0);
+std::vector<double>	PFMET_electronEt(200,0);
+std::vector<double>	PFMET_electronEtFraction(200,0);
+std::vector<double>	PFMET_energy(200,0);
+std::vector<double>	PFMET_et(200,0);
+std::vector<double>	PFMET_eta(200,0);
+std::vector<int>	PFMET_hasMasterClone(200,0);
+std::vector<int>	PFMET_hasMasterClonePtr(200,0);
+std::vector<int>	PFMET_isCaloMuon(200,0);
+std::vector<int>	PFMET_isConvertedPhoton(200,0);
+std::vector<int>	PFMET_isElectron(200,0);
+std::vector<int>	PFMET_isGlobalMuon(200,0);
+std::vector<int>	PFMET_isJet(200,0);
+std::vector<int>	PFMET_isMuon(200,0);
+std::vector<int>	PFMET_isPhoton(200,0);
+std::vector<int>	PFMET_isStandAloneMuon(200,0);
+std::vector<int>	PFMET_isTrackerMuon(200,0);
+std::vector<int>	PFMET_longLived(200,0);
+std::vector<double>	PFMET_mEtSig(200,0);
+std::vector<double>	PFMET_mass(200,0);
+std::vector<int>	PFMET_massConstraint(200,0);
+std::vector<double>	PFMET_massSqr(200,0);
+std::vector<double>	PFMET_mt(200,0);
+std::vector<double>	PFMET_mtSqr(200,0);
+std::vector<double>	PFMET_muonEt(200,0);
+std::vector<double>	PFMET_muonEtFraction(200,0);
+std::vector<double>	PFMET_neutralHadronEt(200,0);
+std::vector<double>	PFMET_neutralHadronEtFraction(200,0);
+std::vector<size_t>	PFMET_numberOfDaughters(200,0);
+std::vector<size_t>	PFMET_numberOfMothers(200,0);
+std::vector<size_t>	PFMET_numberOfSourceCandidatePtrs(200,0);
+std::vector<size_t>	PFMET_numberOfTracks(200,0);
+std::vector<double>	PFMET_p(200,0);
+std::vector<int>	PFMET_pdgId(200,0);
+std::vector<double>	PFMET_phi(200,0);
+std::vector<double>	PFMET_photonEt(200,0);
+std::vector<double>	PFMET_photonEtFraction(200,0);
+std::vector<double>	PFMET_pt(200,0);
+std::vector<double>	PFMET_px(200,0);
+std::vector<double>	PFMET_py(200,0);
+std::vector<double>	PFMET_pz(200,0);
+std::vector<double>	PFMET_rapidity(200,0);
+std::vector<double>	PFMET_significance(200,0);
+std::vector<int>	PFMET_status(200,0);
+std::vector<double>	PFMET_sumEt(200,0);
+std::vector<double>	PFMET_theta(200,0);
+std::vector<int>	PFMET_threeCharge(200,0);
+std::vector<double>	PFMET_vertexChi2(200,0);
+std::vector<double>	PFMET_vertexNdof(200,0);
+std::vector<double>	PFMET_vertexNormalizedChi2(200,0);
+std::vector<double>	PFMET_vx(200,0);
+std::vector<double>	PFMET_vy(200,0);
+std::vector<double>	PFMET_vz(200,0);
+std::vector<double>	PFMET_y(200,0);
+int	TriggerResults_accept;
+int	TriggerResults_error;
+int	TriggerResults_wasrun;
+int	nGenJet;
+int	nGenMET;
+int	nGenParticle;
+int	nPFJet;
+int	nPFMET;
+unsigned int	nTriggerResults;
+
+//-----------------------------------------------------------------------------
+// --- indexmap keeps track of which objects have been flagged for selection
+// --- IMPORTANT: initialize must be called every event to clear selection
+std::map<std::string, std::vector<int> > indexmap;
+void initialize()
+{
+  for(std::map<std::string, std::vector<int> >::iterator
+    item=indexmap.begin(); 
+    item != indexmap.end();
+	++item)
+	item->second.clear();
+}
+
+void select(std::string objname)
+{
+  indexmap[objname] = std::vector<int>();
+}
+
+void select(std::string objname, int index)
+{
+  try
+    {
+      indexmap[objname].push_back(index);
+    }
+  catch (...)
+    {
+      std::cout << "*** perhaps you failed to call select for " 
+                << objname << std::endl;
+      assert(0);
+    }
+}
+
+//-----------------------------------------------------------------------------
+// --- Structs can be filled by calling fillObjects()
+// --- after the call to stream.read(...)
+//-----------------------------------------------------------------------------
+struct GenJet_s
+{
+  int	charge;
+  double	p;
+  double	energy;
+  double	et;
+  double	px;
+  double	py;
+  double	pz;
+  double	pt;
+  double	phi;
+  double	eta;
+  float	emEnergy;
+  float	hadEnergy;
+  float	invisibleEnergy;
+  float	auxiliaryEnergy;
+  float	etaetaMoment;
+  float	phiphiMoment;
+  float	etaphiMoment;
+  float	maxDistance;
+  int	nConstituents;
+  float	constituentPtDistribution;
+  float	constituentEtaPhiSpread;
+  float	jetArea;
+  float	pileup;
+  int	nPasses;
+  int	isJet;
+  size_t	numberOfDaughters;
+  size_t	numberOfMothers;
+  size_t	numberOfSourceCandidatePtrs;
+  int	threeCharge;
+  double	mass;
+  double	massSqr;
+  double	mt;
+  double	mtSqr;
+  double	theta;
+  double	rapidity;
+  double	y;
+  double	vx;
+  double	vy;
+  double	vz;
+  int	pdgId;
+  int	status;
+  int	longLived;
+  int	massConstraint;
+  double	vertexChi2;
+  double	vertexNdof;
+  double	vertexNormalizedChi2;
+  int	hasMasterClone;
+  int	hasMasterClonePtr;
+  int	isElectron;
+  int	isMuon;
+  int	isStandAloneMuon;
+  int	isGlobalMuon;
+  int	isTrackerMuon;
+  int	isCaloMuon;
+  int	isPhoton;
+  int	isConvertedPhoton;
+};
+std::vector<GenJet_s> GenJet(200);
+
+std::ostream& operator<<(std::ostream& os, const GenJet_s& o)
+{
+  char r[1024];
+  os << "GenJet" << std::endl;
+  sprintf(r, "  %-32s: %f\n", "charge", (double)o.charge); os << r;
+  sprintf(r, "  %-32s: %f\n", "p", (double)o.p); os << r;
+  sprintf(r, "  %-32s: %f\n", "energy", (double)o.energy); os << r;
+  sprintf(r, "  %-32s: %f\n", "et", (double)o.et); os << r;
+  sprintf(r, "  %-32s: %f\n", "px", (double)o.px); os << r;
+  sprintf(r, "  %-32s: %f\n", "py", (double)o.py); os << r;
+  sprintf(r, "  %-32s: %f\n", "pz", (double)o.pz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pt", (double)o.pt); os << r;
+  sprintf(r, "  %-32s: %f\n", "phi", (double)o.phi); os << r;
+  sprintf(r, "  %-32s: %f\n", "eta", (double)o.eta); os << r;
+  sprintf(r, "  %-32s: %f\n", "emEnergy", (double)o.emEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "hadEnergy", (double)o.hadEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "invisibleEnergy", (double)o.invisibleEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "auxiliaryEnergy", (double)o.auxiliaryEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "etaetaMoment", (double)o.etaetaMoment); os << r;
+  sprintf(r, "  %-32s: %f\n", "phiphiMoment", (double)o.phiphiMoment); os << r;
+  sprintf(r, "  %-32s: %f\n", "etaphiMoment", (double)o.etaphiMoment); os << r;
+  sprintf(r, "  %-32s: %f\n", "maxDistance", (double)o.maxDistance); os << r;
+  sprintf(r, "  %-32s: %f\n", "nConstituents", (double)o.nConstituents); os << r;
+  sprintf(r, "  %-32s: %f\n", "constituentPtDistribution", (double)o.constituentPtDistribution); os << r;
+  sprintf(r, "  %-32s: %f\n", "constituentEtaPhiSpread", (double)o.constituentEtaPhiSpread); os << r;
+  sprintf(r, "  %-32s: %f\n", "jetArea", (double)o.jetArea); os << r;
+  sprintf(r, "  %-32s: %f\n", "pileup", (double)o.pileup); os << r;
+  sprintf(r, "  %-32s: %f\n", "nPasses", (double)o.nPasses); os << r;
+  sprintf(r, "  %-32s: %f\n", "isJet", (double)o.isJet); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfDaughters", (double)o.numberOfDaughters); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfMothers", (double)o.numberOfMothers); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfSourceCandidatePtrs", (double)o.numberOfSourceCandidatePtrs); os << r;
+  sprintf(r, "  %-32s: %f\n", "threeCharge", (double)o.threeCharge); os << r;
+  sprintf(r, "  %-32s: %f\n", "mass", (double)o.mass); os << r;
+  sprintf(r, "  %-32s: %f\n", "massSqr", (double)o.massSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "mt", (double)o.mt); os << r;
+  sprintf(r, "  %-32s: %f\n", "mtSqr", (double)o.mtSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "theta", (double)o.theta); os << r;
+  sprintf(r, "  %-32s: %f\n", "rapidity", (double)o.rapidity); os << r;
+  sprintf(r, "  %-32s: %f\n", "y", (double)o.y); os << r;
+  sprintf(r, "  %-32s: %f\n", "vx", (double)o.vx); os << r;
+  sprintf(r, "  %-32s: %f\n", "vy", (double)o.vy); os << r;
+  sprintf(r, "  %-32s: %f\n", "vz", (double)o.vz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pdgId", (double)o.pdgId); os << r;
+  sprintf(r, "  %-32s: %f\n", "status", (double)o.status); os << r;
+  sprintf(r, "  %-32s: %f\n", "longLived", (double)o.longLived); os << r;
+  sprintf(r, "  %-32s: %f\n", "massConstraint", (double)o.massConstraint); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexChi2", (double)o.vertexChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNdof", (double)o.vertexNdof); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNormalizedChi2", (double)o.vertexNormalizedChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClone", (double)o.hasMasterClone); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClonePtr", (double)o.hasMasterClonePtr); os << r;
+  sprintf(r, "  %-32s: %f\n", "isElectron", (double)o.isElectron); os << r;
+  sprintf(r, "  %-32s: %f\n", "isMuon", (double)o.isMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isStandAloneMuon", (double)o.isStandAloneMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isGlobalMuon", (double)o.isGlobalMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isTrackerMuon", (double)o.isTrackerMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isCaloMuon", (double)o.isCaloMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isPhoton", (double)o.isPhoton); os << r;
+  sprintf(r, "  %-32s: %f\n", "isConvertedPhoton", (double)o.isConvertedPhoton); os << r;
+  return os;
+}
+//-----------------------------------------------------------------------------
+struct GenMET_s
+{
+  int	charge;
+  double	p;
+  double	energy;
+  double	et;
+  double	px;
+  double	py;
+  double	pz;
+  double	pt;
+  double	phi;
+  double	eta;
+  double	NeutralEMEtFraction;
+  double	NeutralEMEt;
+  double	ChargedEMEtFraction;
+  double	ChargedEMEt;
+  double	NeutralHadEtFraction;
+  double	NeutralHadEt;
+  double	ChargedHadEtFraction;
+  double	ChargedHadEt;
+  double	MuonEtFraction;
+  double	MuonEt;
+  double	InvisibleEtFraction;
+  double	InvisibleEt;
+  double	emEnergy;
+  double	hadEnergy;
+  double	invisibleEnergy;
+  double	auxiliaryEnergy;
+  double	sumEt;
+  double	mEtSig;
+  double	significance;
+  double	e_longitudinal;
+  size_t	numberOfTracks;
+  size_t	numberOfDaughters;
+  size_t	numberOfMothers;
+  size_t	numberOfSourceCandidatePtrs;
+  int	threeCharge;
+  double	mass;
+  double	massSqr;
+  double	mt;
+  double	mtSqr;
+  double	theta;
+  double	rapidity;
+  double	y;
+  double	vx;
+  double	vy;
+  double	vz;
+  int	pdgId;
+  int	status;
+  int	longLived;
+  int	massConstraint;
+  double	vertexChi2;
+  double	vertexNdof;
+  double	vertexNormalizedChi2;
+  int	hasMasterClone;
+  int	hasMasterClonePtr;
+  int	isElectron;
+  int	isMuon;
+  int	isStandAloneMuon;
+  int	isGlobalMuon;
+  int	isTrackerMuon;
+  int	isCaloMuon;
+  int	isPhoton;
+  int	isConvertedPhoton;
+  int	isJet;
+};
+std::vector<GenMET_s> GenMET(200);
+
+std::ostream& operator<<(std::ostream& os, const GenMET_s& o)
+{
+  char r[1024];
+  os << "GenMET" << std::endl;
+  sprintf(r, "  %-32s: %f\n", "charge", (double)o.charge); os << r;
+  sprintf(r, "  %-32s: %f\n", "p", (double)o.p); os << r;
+  sprintf(r, "  %-32s: %f\n", "energy", (double)o.energy); os << r;
+  sprintf(r, "  %-32s: %f\n", "et", (double)o.et); os << r;
+  sprintf(r, "  %-32s: %f\n", "px", (double)o.px); os << r;
+  sprintf(r, "  %-32s: %f\n", "py", (double)o.py); os << r;
+  sprintf(r, "  %-32s: %f\n", "pz", (double)o.pz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pt", (double)o.pt); os << r;
+  sprintf(r, "  %-32s: %f\n", "phi", (double)o.phi); os << r;
+  sprintf(r, "  %-32s: %f\n", "eta", (double)o.eta); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralEMEtFraction", (double)o.NeutralEMEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralEMEt", (double)o.NeutralEMEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedEMEtFraction", (double)o.ChargedEMEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedEMEt", (double)o.ChargedEMEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralHadEtFraction", (double)o.NeutralHadEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralHadEt", (double)o.NeutralHadEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedHadEtFraction", (double)o.ChargedHadEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedHadEt", (double)o.ChargedHadEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "MuonEtFraction", (double)o.MuonEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "MuonEt", (double)o.MuonEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "InvisibleEtFraction", (double)o.InvisibleEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "InvisibleEt", (double)o.InvisibleEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "emEnergy", (double)o.emEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "hadEnergy", (double)o.hadEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "invisibleEnergy", (double)o.invisibleEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "auxiliaryEnergy", (double)o.auxiliaryEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "sumEt", (double)o.sumEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "mEtSig", (double)o.mEtSig); os << r;
+  sprintf(r, "  %-32s: %f\n", "significance", (double)o.significance); os << r;
+  sprintf(r, "  %-32s: %f\n", "e_longitudinal", (double)o.e_longitudinal); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfTracks", (double)o.numberOfTracks); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfDaughters", (double)o.numberOfDaughters); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfMothers", (double)o.numberOfMothers); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfSourceCandidatePtrs", (double)o.numberOfSourceCandidatePtrs); os << r;
+  sprintf(r, "  %-32s: %f\n", "threeCharge", (double)o.threeCharge); os << r;
+  sprintf(r, "  %-32s: %f\n", "mass", (double)o.mass); os << r;
+  sprintf(r, "  %-32s: %f\n", "massSqr", (double)o.massSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "mt", (double)o.mt); os << r;
+  sprintf(r, "  %-32s: %f\n", "mtSqr", (double)o.mtSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "theta", (double)o.theta); os << r;
+  sprintf(r, "  %-32s: %f\n", "rapidity", (double)o.rapidity); os << r;
+  sprintf(r, "  %-32s: %f\n", "y", (double)o.y); os << r;
+  sprintf(r, "  %-32s: %f\n", "vx", (double)o.vx); os << r;
+  sprintf(r, "  %-32s: %f\n", "vy", (double)o.vy); os << r;
+  sprintf(r, "  %-32s: %f\n", "vz", (double)o.vz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pdgId", (double)o.pdgId); os << r;
+  sprintf(r, "  %-32s: %f\n", "status", (double)o.status); os << r;
+  sprintf(r, "  %-32s: %f\n", "longLived", (double)o.longLived); os << r;
+  sprintf(r, "  %-32s: %f\n", "massConstraint", (double)o.massConstraint); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexChi2", (double)o.vertexChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNdof", (double)o.vertexNdof); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNormalizedChi2", (double)o.vertexNormalizedChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClone", (double)o.hasMasterClone); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClonePtr", (double)o.hasMasterClonePtr); os << r;
+  sprintf(r, "  %-32s: %f\n", "isElectron", (double)o.isElectron); os << r;
+  sprintf(r, "  %-32s: %f\n", "isMuon", (double)o.isMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isStandAloneMuon", (double)o.isStandAloneMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isGlobalMuon", (double)o.isGlobalMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isTrackerMuon", (double)o.isTrackerMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isCaloMuon", (double)o.isCaloMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isPhoton", (double)o.isPhoton); os << r;
+  sprintf(r, "  %-32s: %f\n", "isConvertedPhoton", (double)o.isConvertedPhoton); os << r;
+  sprintf(r, "  %-32s: %f\n", "isJet", (double)o.isJet); os << r;
+  return os;
+}
+//-----------------------------------------------------------------------------
+struct GenParticle_s
+{
+  int	charge;
+  double	p;
+  double	energy;
+  double	et;
+  double	px;
+  double	py;
+  double	pz;
+  double	pt;
+  double	phi;
+  double	eta;
+  int	collisionId;
+  size_t	numberOfDaughters;
+  size_t	numberOfMothers;
+  size_t	numberOfSourceCandidatePtrs;
+  int	threeCharge;
+  double	mass;
+  double	massSqr;
+  double	mt;
+  double	mtSqr;
+  double	theta;
+  double	rapidity;
+  double	y;
+  double	vx;
+  double	vy;
+  double	vz;
+  int	pdgId;
+  int	status;
+  int	longLived;
+  int	massConstraint;
+  double	vertexChi2;
+  double	vertexNdof;
+  double	vertexNormalizedChi2;
+  int	hasMasterClone;
+  int	hasMasterClonePtr;
+  int	isElectron;
+  int	isMuon;
+  int	isStandAloneMuon;
+  int	isGlobalMuon;
+  int	isTrackerMuon;
+  int	isCaloMuon;
+  int	isPhoton;
+  int	isConvertedPhoton;
+  int	isJet;
+};
+std::vector<GenParticle_s> GenParticle(4000);
+
+std::ostream& operator<<(std::ostream& os, const GenParticle_s& o)
+{
+  char r[1024];
+  os << "GenParticle" << std::endl;
+  sprintf(r, "  %-32s: %f\n", "charge", (double)o.charge); os << r;
+  sprintf(r, "  %-32s: %f\n", "p", (double)o.p); os << r;
+  sprintf(r, "  %-32s: %f\n", "energy", (double)o.energy); os << r;
+  sprintf(r, "  %-32s: %f\n", "et", (double)o.et); os << r;
+  sprintf(r, "  %-32s: %f\n", "px", (double)o.px); os << r;
+  sprintf(r, "  %-32s: %f\n", "py", (double)o.py); os << r;
+  sprintf(r, "  %-32s: %f\n", "pz", (double)o.pz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pt", (double)o.pt); os << r;
+  sprintf(r, "  %-32s: %f\n", "phi", (double)o.phi); os << r;
+  sprintf(r, "  %-32s: %f\n", "eta", (double)o.eta); os << r;
+  sprintf(r, "  %-32s: %f\n", "collisionId", (double)o.collisionId); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfDaughters", (double)o.numberOfDaughters); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfMothers", (double)o.numberOfMothers); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfSourceCandidatePtrs", (double)o.numberOfSourceCandidatePtrs); os << r;
+  sprintf(r, "  %-32s: %f\n", "threeCharge", (double)o.threeCharge); os << r;
+  sprintf(r, "  %-32s: %f\n", "mass", (double)o.mass); os << r;
+  sprintf(r, "  %-32s: %f\n", "massSqr", (double)o.massSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "mt", (double)o.mt); os << r;
+  sprintf(r, "  %-32s: %f\n", "mtSqr", (double)o.mtSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "theta", (double)o.theta); os << r;
+  sprintf(r, "  %-32s: %f\n", "rapidity", (double)o.rapidity); os << r;
+  sprintf(r, "  %-32s: %f\n", "y", (double)o.y); os << r;
+  sprintf(r, "  %-32s: %f\n", "vx", (double)o.vx); os << r;
+  sprintf(r, "  %-32s: %f\n", "vy", (double)o.vy); os << r;
+  sprintf(r, "  %-32s: %f\n", "vz", (double)o.vz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pdgId", (double)o.pdgId); os << r;
+  sprintf(r, "  %-32s: %f\n", "status", (double)o.status); os << r;
+  sprintf(r, "  %-32s: %f\n", "longLived", (double)o.longLived); os << r;
+  sprintf(r, "  %-32s: %f\n", "massConstraint", (double)o.massConstraint); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexChi2", (double)o.vertexChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNdof", (double)o.vertexNdof); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNormalizedChi2", (double)o.vertexNormalizedChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClone", (double)o.hasMasterClone); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClonePtr", (double)o.hasMasterClonePtr); os << r;
+  sprintf(r, "  %-32s: %f\n", "isElectron", (double)o.isElectron); os << r;
+  sprintf(r, "  %-32s: %f\n", "isMuon", (double)o.isMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isStandAloneMuon", (double)o.isStandAloneMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isGlobalMuon", (double)o.isGlobalMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isTrackerMuon", (double)o.isTrackerMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isCaloMuon", (double)o.isCaloMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isPhoton", (double)o.isPhoton); os << r;
+  sprintf(r, "  %-32s: %f\n", "isConvertedPhoton", (double)o.isConvertedPhoton); os << r;
+  sprintf(r, "  %-32s: %f\n", "isJet", (double)o.isJet); os << r;
+  return os;
+}
+//-----------------------------------------------------------------------------
+struct PFJet_s
+{
+  int	charge;
+  double	p;
+  double	energy;
+  double	et;
+  double	px;
+  double	py;
+  double	pz;
+  double	pt;
+  double	phi;
+  double	eta;
+  float	chargedHadronEnergy;
+  float	chargedHadronEnergyFraction;
+  float	neutralHadronEnergy;
+  float	neutralHadronEnergyFraction;
+  float	photonEnergy;
+  float	photonEnergyFraction;
+  float	electronEnergy;
+  float	electronEnergyFraction;
+  float	muonEnergy;
+  float	muonEnergyFraction;
+  float	HFHadronEnergy;
+  float	HFHadronEnergyFraction;
+  float	HFEMEnergy;
+  float	HFEMEnergyFraction;
+  int	chargedHadronMultiplicity;
+  int	neutralHadronMultiplicity;
+  int	photonMultiplicity;
+  int	electronMultiplicity;
+  int	muonMultiplicity;
+  int	HFHadronMultiplicity;
+  int	HFEMMultiplicity;
+  float	chargedEmEnergy;
+  float	chargedEmEnergyFraction;
+  float	chargedMuEnergy;
+  float	chargedMuEnergyFraction;
+  float	neutralEmEnergy;
+  float	neutralEmEnergyFraction;
+  int	chargedMultiplicity;
+  int	neutralMultiplicity;
+  float	etaetaMoment;
+  float	phiphiMoment;
+  float	etaphiMoment;
+  float	maxDistance;
+  int	nConstituents;
+  float	constituentPtDistribution;
+  float	constituentEtaPhiSpread;
+  float	jetArea;
+  float	pileup;
+  int	nPasses;
+  int	isJet;
+  size_t	numberOfDaughters;
+  size_t	numberOfMothers;
+  size_t	numberOfSourceCandidatePtrs;
+  int	threeCharge;
+  double	mass;
+  double	massSqr;
+  double	mt;
+  double	mtSqr;
+  double	theta;
+  double	rapidity;
+  double	y;
+  double	vx;
+  double	vy;
+  double	vz;
+  int	pdgId;
+  int	status;
+  int	longLived;
+  int	massConstraint;
+  double	vertexChi2;
+  double	vertexNdof;
+  double	vertexNormalizedChi2;
+  int	hasMasterClone;
+  int	hasMasterClonePtr;
+  int	isElectron;
+  int	isMuon;
+  int	isStandAloneMuon;
+  int	isGlobalMuon;
+  int	isTrackerMuon;
+  int	isCaloMuon;
+  int	isPhoton;
+  int	isConvertedPhoton;
+};
+std::vector<PFJet_s> PFJet(200);
+
+std::ostream& operator<<(std::ostream& os, const PFJet_s& o)
+{
+  char r[1024];
+  os << "PFJet" << std::endl;
+  sprintf(r, "  %-32s: %f\n", "charge", (double)o.charge); os << r;
+  sprintf(r, "  %-32s: %f\n", "p", (double)o.p); os << r;
+  sprintf(r, "  %-32s: %f\n", "energy", (double)o.energy); os << r;
+  sprintf(r, "  %-32s: %f\n", "et", (double)o.et); os << r;
+  sprintf(r, "  %-32s: %f\n", "px", (double)o.px); os << r;
+  sprintf(r, "  %-32s: %f\n", "py", (double)o.py); os << r;
+  sprintf(r, "  %-32s: %f\n", "pz", (double)o.pz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pt", (double)o.pt); os << r;
+  sprintf(r, "  %-32s: %f\n", "phi", (double)o.phi); os << r;
+  sprintf(r, "  %-32s: %f\n", "eta", (double)o.eta); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedHadronEnergy", (double)o.chargedHadronEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedHadronEnergyFraction", (double)o.chargedHadronEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "neutralHadronEnergy", (double)o.neutralHadronEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "neutralHadronEnergyFraction", (double)o.neutralHadronEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "photonEnergy", (double)o.photonEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "photonEnergyFraction", (double)o.photonEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "electronEnergy", (double)o.electronEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "electronEnergyFraction", (double)o.electronEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "muonEnergy", (double)o.muonEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "muonEnergyFraction", (double)o.muonEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFHadronEnergy", (double)o.HFHadronEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFHadronEnergyFraction", (double)o.HFHadronEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFEMEnergy", (double)o.HFEMEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFEMEnergyFraction", (double)o.HFEMEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedHadronMultiplicity", (double)o.chargedHadronMultiplicity); os << r;
+  sprintf(r, "  %-32s: %f\n", "neutralHadronMultiplicity", (double)o.neutralHadronMultiplicity); os << r;
+  sprintf(r, "  %-32s: %f\n", "photonMultiplicity", (double)o.photonMultiplicity); os << r;
+  sprintf(r, "  %-32s: %f\n", "electronMultiplicity", (double)o.electronMultiplicity); os << r;
+  sprintf(r, "  %-32s: %f\n", "muonMultiplicity", (double)o.muonMultiplicity); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFHadronMultiplicity", (double)o.HFHadronMultiplicity); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFEMMultiplicity", (double)o.HFEMMultiplicity); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedEmEnergy", (double)o.chargedEmEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedEmEnergyFraction", (double)o.chargedEmEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedMuEnergy", (double)o.chargedMuEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedMuEnergyFraction", (double)o.chargedMuEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "neutralEmEnergy", (double)o.neutralEmEnergy); os << r;
+  sprintf(r, "  %-32s: %f\n", "neutralEmEnergyFraction", (double)o.neutralEmEnergyFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedMultiplicity", (double)o.chargedMultiplicity); os << r;
+  sprintf(r, "  %-32s: %f\n", "neutralMultiplicity", (double)o.neutralMultiplicity); os << r;
+  sprintf(r, "  %-32s: %f\n", "etaetaMoment", (double)o.etaetaMoment); os << r;
+  sprintf(r, "  %-32s: %f\n", "phiphiMoment", (double)o.phiphiMoment); os << r;
+  sprintf(r, "  %-32s: %f\n", "etaphiMoment", (double)o.etaphiMoment); os << r;
+  sprintf(r, "  %-32s: %f\n", "maxDistance", (double)o.maxDistance); os << r;
+  sprintf(r, "  %-32s: %f\n", "nConstituents", (double)o.nConstituents); os << r;
+  sprintf(r, "  %-32s: %f\n", "constituentPtDistribution", (double)o.constituentPtDistribution); os << r;
+  sprintf(r, "  %-32s: %f\n", "constituentEtaPhiSpread", (double)o.constituentEtaPhiSpread); os << r;
+  sprintf(r, "  %-32s: %f\n", "jetArea", (double)o.jetArea); os << r;
+  sprintf(r, "  %-32s: %f\n", "pileup", (double)o.pileup); os << r;
+  sprintf(r, "  %-32s: %f\n", "nPasses", (double)o.nPasses); os << r;
+  sprintf(r, "  %-32s: %f\n", "isJet", (double)o.isJet); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfDaughters", (double)o.numberOfDaughters); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfMothers", (double)o.numberOfMothers); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfSourceCandidatePtrs", (double)o.numberOfSourceCandidatePtrs); os << r;
+  sprintf(r, "  %-32s: %f\n", "threeCharge", (double)o.threeCharge); os << r;
+  sprintf(r, "  %-32s: %f\n", "mass", (double)o.mass); os << r;
+  sprintf(r, "  %-32s: %f\n", "massSqr", (double)o.massSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "mt", (double)o.mt); os << r;
+  sprintf(r, "  %-32s: %f\n", "mtSqr", (double)o.mtSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "theta", (double)o.theta); os << r;
+  sprintf(r, "  %-32s: %f\n", "rapidity", (double)o.rapidity); os << r;
+  sprintf(r, "  %-32s: %f\n", "y", (double)o.y); os << r;
+  sprintf(r, "  %-32s: %f\n", "vx", (double)o.vx); os << r;
+  sprintf(r, "  %-32s: %f\n", "vy", (double)o.vy); os << r;
+  sprintf(r, "  %-32s: %f\n", "vz", (double)o.vz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pdgId", (double)o.pdgId); os << r;
+  sprintf(r, "  %-32s: %f\n", "status", (double)o.status); os << r;
+  sprintf(r, "  %-32s: %f\n", "longLived", (double)o.longLived); os << r;
+  sprintf(r, "  %-32s: %f\n", "massConstraint", (double)o.massConstraint); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexChi2", (double)o.vertexChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNdof", (double)o.vertexNdof); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNormalizedChi2", (double)o.vertexNormalizedChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClone", (double)o.hasMasterClone); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClonePtr", (double)o.hasMasterClonePtr); os << r;
+  sprintf(r, "  %-32s: %f\n", "isElectron", (double)o.isElectron); os << r;
+  sprintf(r, "  %-32s: %f\n", "isMuon", (double)o.isMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isStandAloneMuon", (double)o.isStandAloneMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isGlobalMuon", (double)o.isGlobalMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isTrackerMuon", (double)o.isTrackerMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isCaloMuon", (double)o.isCaloMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isPhoton", (double)o.isPhoton); os << r;
+  sprintf(r, "  %-32s: %f\n", "isConvertedPhoton", (double)o.isConvertedPhoton); os << r;
+  return os;
+}
+//-----------------------------------------------------------------------------
+struct PFMET_s
+{
+  int	charge;
+  double	p;
+  double	energy;
+  double	et;
+  double	px;
+  double	py;
+  double	pz;
+  double	pt;
+  double	phi;
+  double	eta;
+  double	photonEtFraction;
+  double	photonEt;
+  double	neutralHadronEtFraction;
+  double	neutralHadronEt;
+  double	electronEtFraction;
+  double	electronEt;
+  double	chargedHadronEtFraction;
+  double	chargedHadronEt;
+  double	muonEtFraction;
+  double	muonEt;
+  double	HFHadronEtFraction;
+  double	HFHadronEt;
+  double	HFEMEtFraction;
+  double	HFEMEt;
+  double	NeutralEMEtFraction;
+  double	NeutralEMEt;
+  double	NeutralHadEtFraction;
+  double	NeutralHadEt;
+  double	ChargedEMEtFraction;
+  double	ChargedEMEt;
+  double	ChargedHadEtFraction;
+  double	ChargedHadEt;
+  double	MuonEtFraction;
+  double	MuonEt;
+  double	Type6EtFraction;
+  double	Type6Et;
+  double	Type7EtFraction;
+  double	Type7Et;
+  double	NeutralEMFraction;
+  double	NeutralHadFraction;
+  double	ChargedEMFraction;
+  double	ChargedHadFraction;
+  double	MuonFraction;
+  double	sumEt;
+  double	mEtSig;
+  double	significance;
+  double	e_longitudinal;
+  size_t	numberOfTracks;
+  size_t	numberOfDaughters;
+  size_t	numberOfMothers;
+  size_t	numberOfSourceCandidatePtrs;
+  int	threeCharge;
+  double	mass;
+  double	massSqr;
+  double	mt;
+  double	mtSqr;
+  double	theta;
+  double	rapidity;
+  double	y;
+  double	vx;
+  double	vy;
+  double	vz;
+  int	pdgId;
+  int	status;
+  int	longLived;
+  int	massConstraint;
+  double	vertexChi2;
+  double	vertexNdof;
+  double	vertexNormalizedChi2;
+  int	hasMasterClone;
+  int	hasMasterClonePtr;
+  int	isElectron;
+  int	isMuon;
+  int	isStandAloneMuon;
+  int	isGlobalMuon;
+  int	isTrackerMuon;
+  int	isCaloMuon;
+  int	isPhoton;
+  int	isConvertedPhoton;
+  int	isJet;
+};
+std::vector<PFMET_s> PFMET(200);
+
+std::ostream& operator<<(std::ostream& os, const PFMET_s& o)
+{
+  char r[1024];
+  os << "PFMET" << std::endl;
+  sprintf(r, "  %-32s: %f\n", "charge", (double)o.charge); os << r;
+  sprintf(r, "  %-32s: %f\n", "p", (double)o.p); os << r;
+  sprintf(r, "  %-32s: %f\n", "energy", (double)o.energy); os << r;
+  sprintf(r, "  %-32s: %f\n", "et", (double)o.et); os << r;
+  sprintf(r, "  %-32s: %f\n", "px", (double)o.px); os << r;
+  sprintf(r, "  %-32s: %f\n", "py", (double)o.py); os << r;
+  sprintf(r, "  %-32s: %f\n", "pz", (double)o.pz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pt", (double)o.pt); os << r;
+  sprintf(r, "  %-32s: %f\n", "phi", (double)o.phi); os << r;
+  sprintf(r, "  %-32s: %f\n", "eta", (double)o.eta); os << r;
+  sprintf(r, "  %-32s: %f\n", "photonEtFraction", (double)o.photonEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "photonEt", (double)o.photonEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "neutralHadronEtFraction", (double)o.neutralHadronEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "neutralHadronEt", (double)o.neutralHadronEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "electronEtFraction", (double)o.electronEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "electronEt", (double)o.electronEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedHadronEtFraction", (double)o.chargedHadronEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "chargedHadronEt", (double)o.chargedHadronEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "muonEtFraction", (double)o.muonEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "muonEt", (double)o.muonEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFHadronEtFraction", (double)o.HFHadronEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFHadronEt", (double)o.HFHadronEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFEMEtFraction", (double)o.HFEMEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "HFEMEt", (double)o.HFEMEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralEMEtFraction", (double)o.NeutralEMEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralEMEt", (double)o.NeutralEMEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralHadEtFraction", (double)o.NeutralHadEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralHadEt", (double)o.NeutralHadEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedEMEtFraction", (double)o.ChargedEMEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedEMEt", (double)o.ChargedEMEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedHadEtFraction", (double)o.ChargedHadEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedHadEt", (double)o.ChargedHadEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "MuonEtFraction", (double)o.MuonEtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "MuonEt", (double)o.MuonEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "Type6EtFraction", (double)o.Type6EtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "Type6Et", (double)o.Type6Et); os << r;
+  sprintf(r, "  %-32s: %f\n", "Type7EtFraction", (double)o.Type7EtFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "Type7Et", (double)o.Type7Et); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralEMFraction", (double)o.NeutralEMFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "NeutralHadFraction", (double)o.NeutralHadFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedEMFraction", (double)o.ChargedEMFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "ChargedHadFraction", (double)o.ChargedHadFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "MuonFraction", (double)o.MuonFraction); os << r;
+  sprintf(r, "  %-32s: %f\n", "sumEt", (double)o.sumEt); os << r;
+  sprintf(r, "  %-32s: %f\n", "mEtSig", (double)o.mEtSig); os << r;
+  sprintf(r, "  %-32s: %f\n", "significance", (double)o.significance); os << r;
+  sprintf(r, "  %-32s: %f\n", "e_longitudinal", (double)o.e_longitudinal); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfTracks", (double)o.numberOfTracks); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfDaughters", (double)o.numberOfDaughters); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfMothers", (double)o.numberOfMothers); os << r;
+  sprintf(r, "  %-32s: %f\n", "numberOfSourceCandidatePtrs", (double)o.numberOfSourceCandidatePtrs); os << r;
+  sprintf(r, "  %-32s: %f\n", "threeCharge", (double)o.threeCharge); os << r;
+  sprintf(r, "  %-32s: %f\n", "mass", (double)o.mass); os << r;
+  sprintf(r, "  %-32s: %f\n", "massSqr", (double)o.massSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "mt", (double)o.mt); os << r;
+  sprintf(r, "  %-32s: %f\n", "mtSqr", (double)o.mtSqr); os << r;
+  sprintf(r, "  %-32s: %f\n", "theta", (double)o.theta); os << r;
+  sprintf(r, "  %-32s: %f\n", "rapidity", (double)o.rapidity); os << r;
+  sprintf(r, "  %-32s: %f\n", "y", (double)o.y); os << r;
+  sprintf(r, "  %-32s: %f\n", "vx", (double)o.vx); os << r;
+  sprintf(r, "  %-32s: %f\n", "vy", (double)o.vy); os << r;
+  sprintf(r, "  %-32s: %f\n", "vz", (double)o.vz); os << r;
+  sprintf(r, "  %-32s: %f\n", "pdgId", (double)o.pdgId); os << r;
+  sprintf(r, "  %-32s: %f\n", "status", (double)o.status); os << r;
+  sprintf(r, "  %-32s: %f\n", "longLived", (double)o.longLived); os << r;
+  sprintf(r, "  %-32s: %f\n", "massConstraint", (double)o.massConstraint); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexChi2", (double)o.vertexChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNdof", (double)o.vertexNdof); os << r;
+  sprintf(r, "  %-32s: %f\n", "vertexNormalizedChi2", (double)o.vertexNormalizedChi2); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClone", (double)o.hasMasterClone); os << r;
+  sprintf(r, "  %-32s: %f\n", "hasMasterClonePtr", (double)o.hasMasterClonePtr); os << r;
+  sprintf(r, "  %-32s: %f\n", "isElectron", (double)o.isElectron); os << r;
+  sprintf(r, "  %-32s: %f\n", "isMuon", (double)o.isMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isStandAloneMuon", (double)o.isStandAloneMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isGlobalMuon", (double)o.isGlobalMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isTrackerMuon", (double)o.isTrackerMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isCaloMuon", (double)o.isCaloMuon); os << r;
+  sprintf(r, "  %-32s: %f\n", "isPhoton", (double)o.isPhoton); os << r;
+  sprintf(r, "  %-32s: %f\n", "isConvertedPhoton", (double)o.isConvertedPhoton); os << r;
+  sprintf(r, "  %-32s: %f\n", "isJet", (double)o.isJet); os << r;
+  return os;
+}
+//-----------------------------------------------------------------------------
+
+inline void fillGenJet()
+{
+  GenJet.resize(GenJet_charge.size());
+  for(unsigned int i=0; i < GenJet.size(); ++i)
+    {
+      GenJet[i].charge	= GenJet_charge[i];
+      GenJet[i].p	= GenJet_p[i];
+      GenJet[i].energy	= GenJet_energy[i];
+      GenJet[i].et	= GenJet_et[i];
+      GenJet[i].px	= GenJet_px[i];
+      GenJet[i].py	= GenJet_py[i];
+      GenJet[i].pz	= GenJet_pz[i];
+      GenJet[i].pt	= GenJet_pt[i];
+      GenJet[i].phi	= GenJet_phi[i];
+      GenJet[i].eta	= GenJet_eta[i];
+      GenJet[i].emEnergy	= GenJet_emEnergy[i];
+      GenJet[i].hadEnergy	= GenJet_hadEnergy[i];
+      GenJet[i].invisibleEnergy	= GenJet_invisibleEnergy[i];
+      GenJet[i].auxiliaryEnergy	= GenJet_auxiliaryEnergy[i];
+      GenJet[i].etaetaMoment	= GenJet_etaetaMoment[i];
+      GenJet[i].phiphiMoment	= GenJet_phiphiMoment[i];
+      GenJet[i].etaphiMoment	= GenJet_etaphiMoment[i];
+      GenJet[i].maxDistance	= GenJet_maxDistance[i];
+      GenJet[i].nConstituents	= GenJet_nConstituents[i];
+      GenJet[i].constituentPtDistribution	= GenJet_constituentPtDistribution[i];
+      GenJet[i].constituentEtaPhiSpread	= GenJet_constituentEtaPhiSpread[i];
+      GenJet[i].jetArea	= GenJet_jetArea[i];
+      GenJet[i].pileup	= GenJet_pileup[i];
+      GenJet[i].nPasses	= GenJet_nPasses[i];
+      GenJet[i].isJet	= GenJet_isJet[i];
+      GenJet[i].numberOfDaughters	= GenJet_numberOfDaughters[i];
+      GenJet[i].numberOfMothers	= GenJet_numberOfMothers[i];
+      GenJet[i].numberOfSourceCandidatePtrs	= GenJet_numberOfSourceCandidatePtrs[i];
+      GenJet[i].threeCharge	= GenJet_threeCharge[i];
+      GenJet[i].mass	= GenJet_mass[i];
+      GenJet[i].massSqr	= GenJet_massSqr[i];
+      GenJet[i].mt	= GenJet_mt[i];
+      GenJet[i].mtSqr	= GenJet_mtSqr[i];
+      GenJet[i].theta	= GenJet_theta[i];
+      GenJet[i].rapidity	= GenJet_rapidity[i];
+      GenJet[i].y	= GenJet_y[i];
+      GenJet[i].vx	= GenJet_vx[i];
+      GenJet[i].vy	= GenJet_vy[i];
+      GenJet[i].vz	= GenJet_vz[i];
+      GenJet[i].pdgId	= GenJet_pdgId[i];
+      GenJet[i].status	= GenJet_status[i];
+      GenJet[i].longLived	= GenJet_longLived[i];
+      GenJet[i].massConstraint	= GenJet_massConstraint[i];
+      GenJet[i].vertexChi2	= GenJet_vertexChi2[i];
+      GenJet[i].vertexNdof	= GenJet_vertexNdof[i];
+      GenJet[i].vertexNormalizedChi2	= GenJet_vertexNormalizedChi2[i];
+      GenJet[i].hasMasterClone	= GenJet_hasMasterClone[i];
+      GenJet[i].hasMasterClonePtr	= GenJet_hasMasterClonePtr[i];
+      GenJet[i].isElectron	= GenJet_isElectron[i];
+      GenJet[i].isMuon	= GenJet_isMuon[i];
+      GenJet[i].isStandAloneMuon	= GenJet_isStandAloneMuon[i];
+      GenJet[i].isGlobalMuon	= GenJet_isGlobalMuon[i];
+      GenJet[i].isTrackerMuon	= GenJet_isTrackerMuon[i];
+      GenJet[i].isCaloMuon	= GenJet_isCaloMuon[i];
+      GenJet[i].isPhoton	= GenJet_isPhoton[i];
+      GenJet[i].isConvertedPhoton	= GenJet_isConvertedPhoton[i];
+    }
+}
+
+inline void fillGenMET()
+{
+  GenMET.resize(GenMET_charge.size());
+  for(unsigned int i=0; i < GenMET.size(); ++i)
+    {
+      GenMET[i].charge	= GenMET_charge[i];
+      GenMET[i].p	= GenMET_p[i];
+      GenMET[i].energy	= GenMET_energy[i];
+      GenMET[i].et	= GenMET_et[i];
+      GenMET[i].px	= GenMET_px[i];
+      GenMET[i].py	= GenMET_py[i];
+      GenMET[i].pz	= GenMET_pz[i];
+      GenMET[i].pt	= GenMET_pt[i];
+      GenMET[i].phi	= GenMET_phi[i];
+      GenMET[i].eta	= GenMET_eta[i];
+      GenMET[i].NeutralEMEtFraction	= GenMET_NeutralEMEtFraction[i];
+      GenMET[i].NeutralEMEt	= GenMET_NeutralEMEt[i];
+      GenMET[i].ChargedEMEtFraction	= GenMET_ChargedEMEtFraction[i];
+      GenMET[i].ChargedEMEt	= GenMET_ChargedEMEt[i];
+      GenMET[i].NeutralHadEtFraction	= GenMET_NeutralHadEtFraction[i];
+      GenMET[i].NeutralHadEt	= GenMET_NeutralHadEt[i];
+      GenMET[i].ChargedHadEtFraction	= GenMET_ChargedHadEtFraction[i];
+      GenMET[i].ChargedHadEt	= GenMET_ChargedHadEt[i];
+      GenMET[i].MuonEtFraction	= GenMET_MuonEtFraction[i];
+      GenMET[i].MuonEt	= GenMET_MuonEt[i];
+      GenMET[i].InvisibleEtFraction	= GenMET_InvisibleEtFraction[i];
+      GenMET[i].InvisibleEt	= GenMET_InvisibleEt[i];
+      GenMET[i].emEnergy	= GenMET_emEnergy[i];
+      GenMET[i].hadEnergy	= GenMET_hadEnergy[i];
+      GenMET[i].invisibleEnergy	= GenMET_invisibleEnergy[i];
+      GenMET[i].auxiliaryEnergy	= GenMET_auxiliaryEnergy[i];
+      GenMET[i].sumEt	= GenMET_sumEt[i];
+      GenMET[i].mEtSig	= GenMET_mEtSig[i];
+      GenMET[i].significance	= GenMET_significance[i];
+      GenMET[i].e_longitudinal	= GenMET_e_longitudinal[i];
+      GenMET[i].numberOfTracks	= GenMET_numberOfTracks[i];
+      GenMET[i].numberOfDaughters	= GenMET_numberOfDaughters[i];
+      GenMET[i].numberOfMothers	= GenMET_numberOfMothers[i];
+      GenMET[i].numberOfSourceCandidatePtrs	= GenMET_numberOfSourceCandidatePtrs[i];
+      GenMET[i].threeCharge	= GenMET_threeCharge[i];
+      GenMET[i].mass	= GenMET_mass[i];
+      GenMET[i].massSqr	= GenMET_massSqr[i];
+      GenMET[i].mt	= GenMET_mt[i];
+      GenMET[i].mtSqr	= GenMET_mtSqr[i];
+      GenMET[i].theta	= GenMET_theta[i];
+      GenMET[i].rapidity	= GenMET_rapidity[i];
+      GenMET[i].y	= GenMET_y[i];
+      GenMET[i].vx	= GenMET_vx[i];
+      GenMET[i].vy	= GenMET_vy[i];
+      GenMET[i].vz	= GenMET_vz[i];
+      GenMET[i].pdgId	= GenMET_pdgId[i];
+      GenMET[i].status	= GenMET_status[i];
+      GenMET[i].longLived	= GenMET_longLived[i];
+      GenMET[i].massConstraint	= GenMET_massConstraint[i];
+      GenMET[i].vertexChi2	= GenMET_vertexChi2[i];
+      GenMET[i].vertexNdof	= GenMET_vertexNdof[i];
+      GenMET[i].vertexNormalizedChi2	= GenMET_vertexNormalizedChi2[i];
+      GenMET[i].hasMasterClone	= GenMET_hasMasterClone[i];
+      GenMET[i].hasMasterClonePtr	= GenMET_hasMasterClonePtr[i];
+      GenMET[i].isElectron	= GenMET_isElectron[i];
+      GenMET[i].isMuon	= GenMET_isMuon[i];
+      GenMET[i].isStandAloneMuon	= GenMET_isStandAloneMuon[i];
+      GenMET[i].isGlobalMuon	= GenMET_isGlobalMuon[i];
+      GenMET[i].isTrackerMuon	= GenMET_isTrackerMuon[i];
+      GenMET[i].isCaloMuon	= GenMET_isCaloMuon[i];
+      GenMET[i].isPhoton	= GenMET_isPhoton[i];
+      GenMET[i].isConvertedPhoton	= GenMET_isConvertedPhoton[i];
+      GenMET[i].isJet	= GenMET_isJet[i];
+    }
+}
+
+inline void fillGenParticle()
+{
+  GenParticle.resize(GenParticle_charge.size());
+  for(unsigned int i=0; i < GenParticle.size(); ++i)
+    {
+      GenParticle[i].charge	= GenParticle_charge[i];
+      GenParticle[i].p	= GenParticle_p[i];
+      GenParticle[i].energy	= GenParticle_energy[i];
+      GenParticle[i].et	= GenParticle_et[i];
+      GenParticle[i].px	= GenParticle_px[i];
+      GenParticle[i].py	= GenParticle_py[i];
+      GenParticle[i].pz	= GenParticle_pz[i];
+      GenParticle[i].pt	= GenParticle_pt[i];
+      GenParticle[i].phi	= GenParticle_phi[i];
+      GenParticle[i].eta	= GenParticle_eta[i];
+      GenParticle[i].collisionId	= GenParticle_collisionId[i];
+      GenParticle[i].numberOfDaughters	= GenParticle_numberOfDaughters[i];
+      GenParticle[i].numberOfMothers	= GenParticle_numberOfMothers[i];
+      GenParticle[i].numberOfSourceCandidatePtrs	= GenParticle_numberOfSourceCandidatePtrs[i];
+      GenParticle[i].threeCharge	= GenParticle_threeCharge[i];
+      GenParticle[i].mass	= GenParticle_mass[i];
+      GenParticle[i].massSqr	= GenParticle_massSqr[i];
+      GenParticle[i].mt	= GenParticle_mt[i];
+      GenParticle[i].mtSqr	= GenParticle_mtSqr[i];
+      GenParticle[i].theta	= GenParticle_theta[i];
+      GenParticle[i].rapidity	= GenParticle_rapidity[i];
+      GenParticle[i].y	= GenParticle_y[i];
+      GenParticle[i].vx	= GenParticle_vx[i];
+      GenParticle[i].vy	= GenParticle_vy[i];
+      GenParticle[i].vz	= GenParticle_vz[i];
+      GenParticle[i].pdgId	= GenParticle_pdgId[i];
+      GenParticle[i].status	= GenParticle_status[i];
+      GenParticle[i].longLived	= GenParticle_longLived[i];
+      GenParticle[i].massConstraint	= GenParticle_massConstraint[i];
+      GenParticle[i].vertexChi2	= GenParticle_vertexChi2[i];
+      GenParticle[i].vertexNdof	= GenParticle_vertexNdof[i];
+      GenParticle[i].vertexNormalizedChi2	= GenParticle_vertexNormalizedChi2[i];
+      GenParticle[i].hasMasterClone	= GenParticle_hasMasterClone[i];
+      GenParticle[i].hasMasterClonePtr	= GenParticle_hasMasterClonePtr[i];
+      GenParticle[i].isElectron	= GenParticle_isElectron[i];
+      GenParticle[i].isMuon	= GenParticle_isMuon[i];
+      GenParticle[i].isStandAloneMuon	= GenParticle_isStandAloneMuon[i];
+      GenParticle[i].isGlobalMuon	= GenParticle_isGlobalMuon[i];
+      GenParticle[i].isTrackerMuon	= GenParticle_isTrackerMuon[i];
+      GenParticle[i].isCaloMuon	= GenParticle_isCaloMuon[i];
+      GenParticle[i].isPhoton	= GenParticle_isPhoton[i];
+      GenParticle[i].isConvertedPhoton	= GenParticle_isConvertedPhoton[i];
+      GenParticle[i].isJet	= GenParticle_isJet[i];
+    }
+}
+
+inline void fillPFJet()
+{
+  PFJet.resize(PFJet_charge.size());
+  for(unsigned int i=0; i < PFJet.size(); ++i)
+    {
+      PFJet[i].charge	= PFJet_charge[i];
+      PFJet[i].p	= PFJet_p[i];
+      PFJet[i].energy	= PFJet_energy[i];
+      PFJet[i].et	= PFJet_et[i];
+      PFJet[i].px	= PFJet_px[i];
+      PFJet[i].py	= PFJet_py[i];
+      PFJet[i].pz	= PFJet_pz[i];
+      PFJet[i].pt	= PFJet_pt[i];
+      PFJet[i].phi	= PFJet_phi[i];
+      PFJet[i].eta	= PFJet_eta[i];
+      PFJet[i].chargedHadronEnergy	= PFJet_chargedHadronEnergy[i];
+      PFJet[i].chargedHadronEnergyFraction	= PFJet_chargedHadronEnergyFraction[i];
+      PFJet[i].neutralHadronEnergy	= PFJet_neutralHadronEnergy[i];
+      PFJet[i].neutralHadronEnergyFraction	= PFJet_neutralHadronEnergyFraction[i];
+      PFJet[i].photonEnergy	= PFJet_photonEnergy[i];
+      PFJet[i].photonEnergyFraction	= PFJet_photonEnergyFraction[i];
+      PFJet[i].electronEnergy	= PFJet_electronEnergy[i];
+      PFJet[i].electronEnergyFraction	= PFJet_electronEnergyFraction[i];
+      PFJet[i].muonEnergy	= PFJet_muonEnergy[i];
+      PFJet[i].muonEnergyFraction	= PFJet_muonEnergyFraction[i];
+      PFJet[i].HFHadronEnergy	= PFJet_HFHadronEnergy[i];
+      PFJet[i].HFHadronEnergyFraction	= PFJet_HFHadronEnergyFraction[i];
+      PFJet[i].HFEMEnergy	= PFJet_HFEMEnergy[i];
+      PFJet[i].HFEMEnergyFraction	= PFJet_HFEMEnergyFraction[i];
+      PFJet[i].chargedHadronMultiplicity	= PFJet_chargedHadronMultiplicity[i];
+      PFJet[i].neutralHadronMultiplicity	= PFJet_neutralHadronMultiplicity[i];
+      PFJet[i].photonMultiplicity	= PFJet_photonMultiplicity[i];
+      PFJet[i].electronMultiplicity	= PFJet_electronMultiplicity[i];
+      PFJet[i].muonMultiplicity	= PFJet_muonMultiplicity[i];
+      PFJet[i].HFHadronMultiplicity	= PFJet_HFHadronMultiplicity[i];
+      PFJet[i].HFEMMultiplicity	= PFJet_HFEMMultiplicity[i];
+      PFJet[i].chargedEmEnergy	= PFJet_chargedEmEnergy[i];
+      PFJet[i].chargedEmEnergyFraction	= PFJet_chargedEmEnergyFraction[i];
+      PFJet[i].chargedMuEnergy	= PFJet_chargedMuEnergy[i];
+      PFJet[i].chargedMuEnergyFraction	= PFJet_chargedMuEnergyFraction[i];
+      PFJet[i].neutralEmEnergy	= PFJet_neutralEmEnergy[i];
+      PFJet[i].neutralEmEnergyFraction	= PFJet_neutralEmEnergyFraction[i];
+      PFJet[i].chargedMultiplicity	= PFJet_chargedMultiplicity[i];
+      PFJet[i].neutralMultiplicity	= PFJet_neutralMultiplicity[i];
+      PFJet[i].etaetaMoment	= PFJet_etaetaMoment[i];
+      PFJet[i].phiphiMoment	= PFJet_phiphiMoment[i];
+      PFJet[i].etaphiMoment	= PFJet_etaphiMoment[i];
+      PFJet[i].maxDistance	= PFJet_maxDistance[i];
+      PFJet[i].nConstituents	= PFJet_nConstituents[i];
+      PFJet[i].constituentPtDistribution	= PFJet_constituentPtDistribution[i];
+      PFJet[i].constituentEtaPhiSpread	= PFJet_constituentEtaPhiSpread[i];
+      PFJet[i].jetArea	= PFJet_jetArea[i];
+      PFJet[i].pileup	= PFJet_pileup[i];
+      PFJet[i].nPasses	= PFJet_nPasses[i];
+      PFJet[i].isJet	= PFJet_isJet[i];
+      PFJet[i].numberOfDaughters	= PFJet_numberOfDaughters[i];
+      PFJet[i].numberOfMothers	= PFJet_numberOfMothers[i];
+      PFJet[i].numberOfSourceCandidatePtrs	= PFJet_numberOfSourceCandidatePtrs[i];
+      PFJet[i].threeCharge	= PFJet_threeCharge[i];
+      PFJet[i].mass	= PFJet_mass[i];
+      PFJet[i].massSqr	= PFJet_massSqr[i];
+      PFJet[i].mt	= PFJet_mt[i];
+      PFJet[i].mtSqr	= PFJet_mtSqr[i];
+      PFJet[i].theta	= PFJet_theta[i];
+      PFJet[i].rapidity	= PFJet_rapidity[i];
+      PFJet[i].y	= PFJet_y[i];
+      PFJet[i].vx	= PFJet_vx[i];
+      PFJet[i].vy	= PFJet_vy[i];
+      PFJet[i].vz	= PFJet_vz[i];
+      PFJet[i].pdgId	= PFJet_pdgId[i];
+      PFJet[i].status	= PFJet_status[i];
+      PFJet[i].longLived	= PFJet_longLived[i];
+      PFJet[i].massConstraint	= PFJet_massConstraint[i];
+      PFJet[i].vertexChi2	= PFJet_vertexChi2[i];
+      PFJet[i].vertexNdof	= PFJet_vertexNdof[i];
+      PFJet[i].vertexNormalizedChi2	= PFJet_vertexNormalizedChi2[i];
+      PFJet[i].hasMasterClone	= PFJet_hasMasterClone[i];
+      PFJet[i].hasMasterClonePtr	= PFJet_hasMasterClonePtr[i];
+      PFJet[i].isElectron	= PFJet_isElectron[i];
+      PFJet[i].isMuon	= PFJet_isMuon[i];
+      PFJet[i].isStandAloneMuon	= PFJet_isStandAloneMuon[i];
+      PFJet[i].isGlobalMuon	= PFJet_isGlobalMuon[i];
+      PFJet[i].isTrackerMuon	= PFJet_isTrackerMuon[i];
+      PFJet[i].isCaloMuon	= PFJet_isCaloMuon[i];
+      PFJet[i].isPhoton	= PFJet_isPhoton[i];
+      PFJet[i].isConvertedPhoton	= PFJet_isConvertedPhoton[i];
+    }
+}
+
+inline void fillPFMET()
+{
+  PFMET.resize(PFMET_charge.size());
+  for(unsigned int i=0; i < PFMET.size(); ++i)
+    {
+      PFMET[i].charge	= PFMET_charge[i];
+      PFMET[i].p	= PFMET_p[i];
+      PFMET[i].energy	= PFMET_energy[i];
+      PFMET[i].et	= PFMET_et[i];
+      PFMET[i].px	= PFMET_px[i];
+      PFMET[i].py	= PFMET_py[i];
+      PFMET[i].pz	= PFMET_pz[i];
+      PFMET[i].pt	= PFMET_pt[i];
+      PFMET[i].phi	= PFMET_phi[i];
+      PFMET[i].eta	= PFMET_eta[i];
+      PFMET[i].photonEtFraction	= PFMET_photonEtFraction[i];
+      PFMET[i].photonEt	= PFMET_photonEt[i];
+      PFMET[i].neutralHadronEtFraction	= PFMET_neutralHadronEtFraction[i];
+      PFMET[i].neutralHadronEt	= PFMET_neutralHadronEt[i];
+      PFMET[i].electronEtFraction	= PFMET_electronEtFraction[i];
+      PFMET[i].electronEt	= PFMET_electronEt[i];
+      PFMET[i].chargedHadronEtFraction	= PFMET_chargedHadronEtFraction[i];
+      PFMET[i].chargedHadronEt	= PFMET_chargedHadronEt[i];
+      PFMET[i].muonEtFraction	= PFMET_muonEtFraction[i];
+      PFMET[i].muonEt	= PFMET_muonEt[i];
+      PFMET[i].HFHadronEtFraction	= PFMET_HFHadronEtFraction[i];
+      PFMET[i].HFHadronEt	= PFMET_HFHadronEt[i];
+      PFMET[i].HFEMEtFraction	= PFMET_HFEMEtFraction[i];
+      PFMET[i].HFEMEt	= PFMET_HFEMEt[i];
+      PFMET[i].NeutralEMEtFraction	= PFMET_NeutralEMEtFraction[i];
+      PFMET[i].NeutralEMEt	= PFMET_NeutralEMEt[i];
+      PFMET[i].NeutralHadEtFraction	= PFMET_NeutralHadEtFraction[i];
+      PFMET[i].NeutralHadEt	= PFMET_NeutralHadEt[i];
+      PFMET[i].ChargedEMEtFraction	= PFMET_ChargedEMEtFraction[i];
+      PFMET[i].ChargedEMEt	= PFMET_ChargedEMEt[i];
+      PFMET[i].ChargedHadEtFraction	= PFMET_ChargedHadEtFraction[i];
+      PFMET[i].ChargedHadEt	= PFMET_ChargedHadEt[i];
+      PFMET[i].MuonEtFraction	= PFMET_MuonEtFraction[i];
+      PFMET[i].MuonEt	= PFMET_MuonEt[i];
+      PFMET[i].Type6EtFraction	= PFMET_Type6EtFraction[i];
+      PFMET[i].Type6Et	= PFMET_Type6Et[i];
+      PFMET[i].Type7EtFraction	= PFMET_Type7EtFraction[i];
+      PFMET[i].Type7Et	= PFMET_Type7Et[i];
+      PFMET[i].NeutralEMFraction	= PFMET_NeutralEMFraction[i];
+      PFMET[i].NeutralHadFraction	= PFMET_NeutralHadFraction[i];
+      PFMET[i].ChargedEMFraction	= PFMET_ChargedEMFraction[i];
+      PFMET[i].ChargedHadFraction	= PFMET_ChargedHadFraction[i];
+      PFMET[i].MuonFraction	= PFMET_MuonFraction[i];
+      PFMET[i].sumEt	= PFMET_sumEt[i];
+      PFMET[i].mEtSig	= PFMET_mEtSig[i];
+      PFMET[i].significance	= PFMET_significance[i];
+      PFMET[i].e_longitudinal	= PFMET_e_longitudinal[i];
+      PFMET[i].numberOfTracks	= PFMET_numberOfTracks[i];
+      PFMET[i].numberOfDaughters	= PFMET_numberOfDaughters[i];
+      PFMET[i].numberOfMothers	= PFMET_numberOfMothers[i];
+      PFMET[i].numberOfSourceCandidatePtrs	= PFMET_numberOfSourceCandidatePtrs[i];
+      PFMET[i].threeCharge	= PFMET_threeCharge[i];
+      PFMET[i].mass	= PFMET_mass[i];
+      PFMET[i].massSqr	= PFMET_massSqr[i];
+      PFMET[i].mt	= PFMET_mt[i];
+      PFMET[i].mtSqr	= PFMET_mtSqr[i];
+      PFMET[i].theta	= PFMET_theta[i];
+      PFMET[i].rapidity	= PFMET_rapidity[i];
+      PFMET[i].y	= PFMET_y[i];
+      PFMET[i].vx	= PFMET_vx[i];
+      PFMET[i].vy	= PFMET_vy[i];
+      PFMET[i].vz	= PFMET_vz[i];
+      PFMET[i].pdgId	= PFMET_pdgId[i];
+      PFMET[i].status	= PFMET_status[i];
+      PFMET[i].longLived	= PFMET_longLived[i];
+      PFMET[i].massConstraint	= PFMET_massConstraint[i];
+      PFMET[i].vertexChi2	= PFMET_vertexChi2[i];
+      PFMET[i].vertexNdof	= PFMET_vertexNdof[i];
+      PFMET[i].vertexNormalizedChi2	= PFMET_vertexNormalizedChi2[i];
+      PFMET[i].hasMasterClone	= PFMET_hasMasterClone[i];
+      PFMET[i].hasMasterClonePtr	= PFMET_hasMasterClonePtr[i];
+      PFMET[i].isElectron	= PFMET_isElectron[i];
+      PFMET[i].isMuon	= PFMET_isMuon[i];
+      PFMET[i].isStandAloneMuon	= PFMET_isStandAloneMuon[i];
+      PFMET[i].isGlobalMuon	= PFMET_isGlobalMuon[i];
+      PFMET[i].isTrackerMuon	= PFMET_isTrackerMuon[i];
+      PFMET[i].isCaloMuon	= PFMET_isCaloMuon[i];
+      PFMET[i].isPhoton	= PFMET_isPhoton[i];
+      PFMET[i].isConvertedPhoton	= PFMET_isConvertedPhoton[i];
+      PFMET[i].isJet	= PFMET_isJet[i];
+    }
+}
+
+
+void fillObjects()
+{
+  fillGenJet();
+  fillGenMET();
+  fillGenParticle();
+  fillPFJet();
+  fillPFMET();
+}
+
+//-----------------------------------------------------------------------------
+// --- Call saveSelectedObjects() just before call to addEvent if
+// --- you wish to save only the selected objects
+//-----------------------------------------------------------------------------
+// Select objects for which the select function was called
+void saveSelectedObjects()
+{
+  int n = 0;
+
+  n = 0;
+  try
+    {
+       n = indexmap["GenJet"].size();
+    }
+  catch (...)
+    {}
+  if ( n > 0 )
+    {
+      std::vector<int>& index = indexmap["GenJet"];
+      for(int i=0; i < n; ++i)
+        {
+          int j = index[i];
+          GenJet_charge[i]	= GenJet_charge[j];
+          GenJet_p[i]	= GenJet_p[j];
+          GenJet_energy[i]	= GenJet_energy[j];
+          GenJet_et[i]	= GenJet_et[j];
+          GenJet_px[i]	= GenJet_px[j];
+          GenJet_py[i]	= GenJet_py[j];
+          GenJet_pz[i]	= GenJet_pz[j];
+          GenJet_pt[i]	= GenJet_pt[j];
+          GenJet_phi[i]	= GenJet_phi[j];
+          GenJet_eta[i]	= GenJet_eta[j];
+          GenJet_emEnergy[i]	= GenJet_emEnergy[j];
+          GenJet_hadEnergy[i]	= GenJet_hadEnergy[j];
+          GenJet_invisibleEnergy[i]	= GenJet_invisibleEnergy[j];
+          GenJet_auxiliaryEnergy[i]	= GenJet_auxiliaryEnergy[j];
+          GenJet_etaetaMoment[i]	= GenJet_etaetaMoment[j];
+          GenJet_phiphiMoment[i]	= GenJet_phiphiMoment[j];
+          GenJet_etaphiMoment[i]	= GenJet_etaphiMoment[j];
+          GenJet_maxDistance[i]	= GenJet_maxDistance[j];
+          GenJet_nConstituents[i]	= GenJet_nConstituents[j];
+          GenJet_constituentPtDistribution[i]	= GenJet_constituentPtDistribution[j];
+          GenJet_constituentEtaPhiSpread[i]	= GenJet_constituentEtaPhiSpread[j];
+          GenJet_jetArea[i]	= GenJet_jetArea[j];
+          GenJet_pileup[i]	= GenJet_pileup[j];
+          GenJet_nPasses[i]	= GenJet_nPasses[j];
+          GenJet_isJet[i]	= GenJet_isJet[j];
+          GenJet_numberOfDaughters[i]	= GenJet_numberOfDaughters[j];
+          GenJet_numberOfMothers[i]	= GenJet_numberOfMothers[j];
+          GenJet_numberOfSourceCandidatePtrs[i]	= GenJet_numberOfSourceCandidatePtrs[j];
+          GenJet_threeCharge[i]	= GenJet_threeCharge[j];
+          GenJet_mass[i]	= GenJet_mass[j];
+          GenJet_massSqr[i]	= GenJet_massSqr[j];
+          GenJet_mt[i]	= GenJet_mt[j];
+          GenJet_mtSqr[i]	= GenJet_mtSqr[j];
+          GenJet_theta[i]	= GenJet_theta[j];
+          GenJet_rapidity[i]	= GenJet_rapidity[j];
+          GenJet_y[i]	= GenJet_y[j];
+          GenJet_vx[i]	= GenJet_vx[j];
+          GenJet_vy[i]	= GenJet_vy[j];
+          GenJet_vz[i]	= GenJet_vz[j];
+          GenJet_pdgId[i]	= GenJet_pdgId[j];
+          GenJet_status[i]	= GenJet_status[j];
+          GenJet_longLived[i]	= GenJet_longLived[j];
+          GenJet_massConstraint[i]	= GenJet_massConstraint[j];
+          GenJet_vertexChi2[i]	= GenJet_vertexChi2[j];
+          GenJet_vertexNdof[i]	= GenJet_vertexNdof[j];
+          GenJet_vertexNormalizedChi2[i]	= GenJet_vertexNormalizedChi2[j];
+          GenJet_hasMasterClone[i]	= GenJet_hasMasterClone[j];
+          GenJet_hasMasterClonePtr[i]	= GenJet_hasMasterClonePtr[j];
+          GenJet_isElectron[i]	= GenJet_isElectron[j];
+          GenJet_isMuon[i]	= GenJet_isMuon[j];
+          GenJet_isStandAloneMuon[i]	= GenJet_isStandAloneMuon[j];
+          GenJet_isGlobalMuon[i]	= GenJet_isGlobalMuon[j];
+          GenJet_isTrackerMuon[i]	= GenJet_isTrackerMuon[j];
+          GenJet_isCaloMuon[i]	= GenJet_isCaloMuon[j];
+          GenJet_isPhoton[i]	= GenJet_isPhoton[j];
+          GenJet_isConvertedPhoton[i]	= GenJet_isConvertedPhoton[j];
+        }
+      nGenJet = n;
+    }
+
+  n = 0;
+  try
+    {
+       n = indexmap["GenMET"].size();
+    }
+  catch (...)
+    {}
+  if ( n > 0 )
+    {
+      std::vector<int>& index = indexmap["GenMET"];
+      for(int i=0; i < n; ++i)
+        {
+          int j = index[i];
+          GenMET_charge[i]	= GenMET_charge[j];
+          GenMET_p[i]	= GenMET_p[j];
+          GenMET_energy[i]	= GenMET_energy[j];
+          GenMET_et[i]	= GenMET_et[j];
+          GenMET_px[i]	= GenMET_px[j];
+          GenMET_py[i]	= GenMET_py[j];
+          GenMET_pz[i]	= GenMET_pz[j];
+          GenMET_pt[i]	= GenMET_pt[j];
+          GenMET_phi[i]	= GenMET_phi[j];
+          GenMET_eta[i]	= GenMET_eta[j];
+          GenMET_NeutralEMEtFraction[i]	= GenMET_NeutralEMEtFraction[j];
+          GenMET_NeutralEMEt[i]	= GenMET_NeutralEMEt[j];
+          GenMET_ChargedEMEtFraction[i]	= GenMET_ChargedEMEtFraction[j];
+          GenMET_ChargedEMEt[i]	= GenMET_ChargedEMEt[j];
+          GenMET_NeutralHadEtFraction[i]	= GenMET_NeutralHadEtFraction[j];
+          GenMET_NeutralHadEt[i]	= GenMET_NeutralHadEt[j];
+          GenMET_ChargedHadEtFraction[i]	= GenMET_ChargedHadEtFraction[j];
+          GenMET_ChargedHadEt[i]	= GenMET_ChargedHadEt[j];
+          GenMET_MuonEtFraction[i]	= GenMET_MuonEtFraction[j];
+          GenMET_MuonEt[i]	= GenMET_MuonEt[j];
+          GenMET_InvisibleEtFraction[i]	= GenMET_InvisibleEtFraction[j];
+          GenMET_InvisibleEt[i]	= GenMET_InvisibleEt[j];
+          GenMET_emEnergy[i]	= GenMET_emEnergy[j];
+          GenMET_hadEnergy[i]	= GenMET_hadEnergy[j];
+          GenMET_invisibleEnergy[i]	= GenMET_invisibleEnergy[j];
+          GenMET_auxiliaryEnergy[i]	= GenMET_auxiliaryEnergy[j];
+          GenMET_sumEt[i]	= GenMET_sumEt[j];
+          GenMET_mEtSig[i]	= GenMET_mEtSig[j];
+          GenMET_significance[i]	= GenMET_significance[j];
+          GenMET_e_longitudinal[i]	= GenMET_e_longitudinal[j];
+          GenMET_numberOfTracks[i]	= GenMET_numberOfTracks[j];
+          GenMET_numberOfDaughters[i]	= GenMET_numberOfDaughters[j];
+          GenMET_numberOfMothers[i]	= GenMET_numberOfMothers[j];
+          GenMET_numberOfSourceCandidatePtrs[i]	= GenMET_numberOfSourceCandidatePtrs[j];
+          GenMET_threeCharge[i]	= GenMET_threeCharge[j];
+          GenMET_mass[i]	= GenMET_mass[j];
+          GenMET_massSqr[i]	= GenMET_massSqr[j];
+          GenMET_mt[i]	= GenMET_mt[j];
+          GenMET_mtSqr[i]	= GenMET_mtSqr[j];
+          GenMET_theta[i]	= GenMET_theta[j];
+          GenMET_rapidity[i]	= GenMET_rapidity[j];
+          GenMET_y[i]	= GenMET_y[j];
+          GenMET_vx[i]	= GenMET_vx[j];
+          GenMET_vy[i]	= GenMET_vy[j];
+          GenMET_vz[i]	= GenMET_vz[j];
+          GenMET_pdgId[i]	= GenMET_pdgId[j];
+          GenMET_status[i]	= GenMET_status[j];
+          GenMET_longLived[i]	= GenMET_longLived[j];
+          GenMET_massConstraint[i]	= GenMET_massConstraint[j];
+          GenMET_vertexChi2[i]	= GenMET_vertexChi2[j];
+          GenMET_vertexNdof[i]	= GenMET_vertexNdof[j];
+          GenMET_vertexNormalizedChi2[i]	= GenMET_vertexNormalizedChi2[j];
+          GenMET_hasMasterClone[i]	= GenMET_hasMasterClone[j];
+          GenMET_hasMasterClonePtr[i]	= GenMET_hasMasterClonePtr[j];
+          GenMET_isElectron[i]	= GenMET_isElectron[j];
+          GenMET_isMuon[i]	= GenMET_isMuon[j];
+          GenMET_isStandAloneMuon[i]	= GenMET_isStandAloneMuon[j];
+          GenMET_isGlobalMuon[i]	= GenMET_isGlobalMuon[j];
+          GenMET_isTrackerMuon[i]	= GenMET_isTrackerMuon[j];
+          GenMET_isCaloMuon[i]	= GenMET_isCaloMuon[j];
+          GenMET_isPhoton[i]	= GenMET_isPhoton[j];
+          GenMET_isConvertedPhoton[i]	= GenMET_isConvertedPhoton[j];
+          GenMET_isJet[i]	= GenMET_isJet[j];
+        }
+      nGenMET = n;
+    }
+
+  n = 0;
+  try
+    {
+       n = indexmap["GenParticle"].size();
+    }
+  catch (...)
+    {}
+  if ( n > 0 )
+    {
+      std::vector<int>& index = indexmap["GenParticle"];
+      for(int i=0; i < n; ++i)
+        {
+          int j = index[i];
+          GenParticle_charge[i]	= GenParticle_charge[j];
+          GenParticle_p[i]	= GenParticle_p[j];
+          GenParticle_energy[i]	= GenParticle_energy[j];
+          GenParticle_et[i]	= GenParticle_et[j];
+          GenParticle_px[i]	= GenParticle_px[j];
+          GenParticle_py[i]	= GenParticle_py[j];
+          GenParticle_pz[i]	= GenParticle_pz[j];
+          GenParticle_pt[i]	= GenParticle_pt[j];
+          GenParticle_phi[i]	= GenParticle_phi[j];
+          GenParticle_eta[i]	= GenParticle_eta[j];
+          GenParticle_collisionId[i]	= GenParticle_collisionId[j];
+          GenParticle_numberOfDaughters[i]	= GenParticle_numberOfDaughters[j];
+          GenParticle_numberOfMothers[i]	= GenParticle_numberOfMothers[j];
+          GenParticle_numberOfSourceCandidatePtrs[i]	= GenParticle_numberOfSourceCandidatePtrs[j];
+          GenParticle_threeCharge[i]	= GenParticle_threeCharge[j];
+          GenParticle_mass[i]	= GenParticle_mass[j];
+          GenParticle_massSqr[i]	= GenParticle_massSqr[j];
+          GenParticle_mt[i]	= GenParticle_mt[j];
+          GenParticle_mtSqr[i]	= GenParticle_mtSqr[j];
+          GenParticle_theta[i]	= GenParticle_theta[j];
+          GenParticle_rapidity[i]	= GenParticle_rapidity[j];
+          GenParticle_y[i]	= GenParticle_y[j];
+          GenParticle_vx[i]	= GenParticle_vx[j];
+          GenParticle_vy[i]	= GenParticle_vy[j];
+          GenParticle_vz[i]	= GenParticle_vz[j];
+          GenParticle_pdgId[i]	= GenParticle_pdgId[j];
+          GenParticle_status[i]	= GenParticle_status[j];
+          GenParticle_longLived[i]	= GenParticle_longLived[j];
+          GenParticle_massConstraint[i]	= GenParticle_massConstraint[j];
+          GenParticle_vertexChi2[i]	= GenParticle_vertexChi2[j];
+          GenParticle_vertexNdof[i]	= GenParticle_vertexNdof[j];
+          GenParticle_vertexNormalizedChi2[i]	= GenParticle_vertexNormalizedChi2[j];
+          GenParticle_hasMasterClone[i]	= GenParticle_hasMasterClone[j];
+          GenParticle_hasMasterClonePtr[i]	= GenParticle_hasMasterClonePtr[j];
+          GenParticle_isElectron[i]	= GenParticle_isElectron[j];
+          GenParticle_isMuon[i]	= GenParticle_isMuon[j];
+          GenParticle_isStandAloneMuon[i]	= GenParticle_isStandAloneMuon[j];
+          GenParticle_isGlobalMuon[i]	= GenParticle_isGlobalMuon[j];
+          GenParticle_isTrackerMuon[i]	= GenParticle_isTrackerMuon[j];
+          GenParticle_isCaloMuon[i]	= GenParticle_isCaloMuon[j];
+          GenParticle_isPhoton[i]	= GenParticle_isPhoton[j];
+          GenParticle_isConvertedPhoton[i]	= GenParticle_isConvertedPhoton[j];
+          GenParticle_isJet[i]	= GenParticle_isJet[j];
+        }
+      nGenParticle = n;
+    }
+
+  n = 0;
+  try
+    {
+       n = indexmap["PFJet"].size();
+    }
+  catch (...)
+    {}
+  if ( n > 0 )
+    {
+      std::vector<int>& index = indexmap["PFJet"];
+      for(int i=0; i < n; ++i)
+        {
+          int j = index[i];
+          PFJet_charge[i]	= PFJet_charge[j];
+          PFJet_p[i]	= PFJet_p[j];
+          PFJet_energy[i]	= PFJet_energy[j];
+          PFJet_et[i]	= PFJet_et[j];
+          PFJet_px[i]	= PFJet_px[j];
+          PFJet_py[i]	= PFJet_py[j];
+          PFJet_pz[i]	= PFJet_pz[j];
+          PFJet_pt[i]	= PFJet_pt[j];
+          PFJet_phi[i]	= PFJet_phi[j];
+          PFJet_eta[i]	= PFJet_eta[j];
+          PFJet_chargedHadronEnergy[i]	= PFJet_chargedHadronEnergy[j];
+          PFJet_chargedHadronEnergyFraction[i]	= PFJet_chargedHadronEnergyFraction[j];
+          PFJet_neutralHadronEnergy[i]	= PFJet_neutralHadronEnergy[j];
+          PFJet_neutralHadronEnergyFraction[i]	= PFJet_neutralHadronEnergyFraction[j];
+          PFJet_photonEnergy[i]	= PFJet_photonEnergy[j];
+          PFJet_photonEnergyFraction[i]	= PFJet_photonEnergyFraction[j];
+          PFJet_electronEnergy[i]	= PFJet_electronEnergy[j];
+          PFJet_electronEnergyFraction[i]	= PFJet_electronEnergyFraction[j];
+          PFJet_muonEnergy[i]	= PFJet_muonEnergy[j];
+          PFJet_muonEnergyFraction[i]	= PFJet_muonEnergyFraction[j];
+          PFJet_HFHadronEnergy[i]	= PFJet_HFHadronEnergy[j];
+          PFJet_HFHadronEnergyFraction[i]	= PFJet_HFHadronEnergyFraction[j];
+          PFJet_HFEMEnergy[i]	= PFJet_HFEMEnergy[j];
+          PFJet_HFEMEnergyFraction[i]	= PFJet_HFEMEnergyFraction[j];
+          PFJet_chargedHadronMultiplicity[i]	= PFJet_chargedHadronMultiplicity[j];
+          PFJet_neutralHadronMultiplicity[i]	= PFJet_neutralHadronMultiplicity[j];
+          PFJet_photonMultiplicity[i]	= PFJet_photonMultiplicity[j];
+          PFJet_electronMultiplicity[i]	= PFJet_electronMultiplicity[j];
+          PFJet_muonMultiplicity[i]	= PFJet_muonMultiplicity[j];
+          PFJet_HFHadronMultiplicity[i]	= PFJet_HFHadronMultiplicity[j];
+          PFJet_HFEMMultiplicity[i]	= PFJet_HFEMMultiplicity[j];
+          PFJet_chargedEmEnergy[i]	= PFJet_chargedEmEnergy[j];
+          PFJet_chargedEmEnergyFraction[i]	= PFJet_chargedEmEnergyFraction[j];
+          PFJet_chargedMuEnergy[i]	= PFJet_chargedMuEnergy[j];
+          PFJet_chargedMuEnergyFraction[i]	= PFJet_chargedMuEnergyFraction[j];
+          PFJet_neutralEmEnergy[i]	= PFJet_neutralEmEnergy[j];
+          PFJet_neutralEmEnergyFraction[i]	= PFJet_neutralEmEnergyFraction[j];
+          PFJet_chargedMultiplicity[i]	= PFJet_chargedMultiplicity[j];
+          PFJet_neutralMultiplicity[i]	= PFJet_neutralMultiplicity[j];
+          PFJet_etaetaMoment[i]	= PFJet_etaetaMoment[j];
+          PFJet_phiphiMoment[i]	= PFJet_phiphiMoment[j];
+          PFJet_etaphiMoment[i]	= PFJet_etaphiMoment[j];
+          PFJet_maxDistance[i]	= PFJet_maxDistance[j];
+          PFJet_nConstituents[i]	= PFJet_nConstituents[j];
+          PFJet_constituentPtDistribution[i]	= PFJet_constituentPtDistribution[j];
+          PFJet_constituentEtaPhiSpread[i]	= PFJet_constituentEtaPhiSpread[j];
+          PFJet_jetArea[i]	= PFJet_jetArea[j];
+          PFJet_pileup[i]	= PFJet_pileup[j];
+          PFJet_nPasses[i]	= PFJet_nPasses[j];
+          PFJet_isJet[i]	= PFJet_isJet[j];
+          PFJet_numberOfDaughters[i]	= PFJet_numberOfDaughters[j];
+          PFJet_numberOfMothers[i]	= PFJet_numberOfMothers[j];
+          PFJet_numberOfSourceCandidatePtrs[i]	= PFJet_numberOfSourceCandidatePtrs[j];
+          PFJet_threeCharge[i]	= PFJet_threeCharge[j];
+          PFJet_mass[i]	= PFJet_mass[j];
+          PFJet_massSqr[i]	= PFJet_massSqr[j];
+          PFJet_mt[i]	= PFJet_mt[j];
+          PFJet_mtSqr[i]	= PFJet_mtSqr[j];
+          PFJet_theta[i]	= PFJet_theta[j];
+          PFJet_rapidity[i]	= PFJet_rapidity[j];
+          PFJet_y[i]	= PFJet_y[j];
+          PFJet_vx[i]	= PFJet_vx[j];
+          PFJet_vy[i]	= PFJet_vy[j];
+          PFJet_vz[i]	= PFJet_vz[j];
+          PFJet_pdgId[i]	= PFJet_pdgId[j];
+          PFJet_status[i]	= PFJet_status[j];
+          PFJet_longLived[i]	= PFJet_longLived[j];
+          PFJet_massConstraint[i]	= PFJet_massConstraint[j];
+          PFJet_vertexChi2[i]	= PFJet_vertexChi2[j];
+          PFJet_vertexNdof[i]	= PFJet_vertexNdof[j];
+          PFJet_vertexNormalizedChi2[i]	= PFJet_vertexNormalizedChi2[j];
+          PFJet_hasMasterClone[i]	= PFJet_hasMasterClone[j];
+          PFJet_hasMasterClonePtr[i]	= PFJet_hasMasterClonePtr[j];
+          PFJet_isElectron[i]	= PFJet_isElectron[j];
+          PFJet_isMuon[i]	= PFJet_isMuon[j];
+          PFJet_isStandAloneMuon[i]	= PFJet_isStandAloneMuon[j];
+          PFJet_isGlobalMuon[i]	= PFJet_isGlobalMuon[j];
+          PFJet_isTrackerMuon[i]	= PFJet_isTrackerMuon[j];
+          PFJet_isCaloMuon[i]	= PFJet_isCaloMuon[j];
+          PFJet_isPhoton[i]	= PFJet_isPhoton[j];
+          PFJet_isConvertedPhoton[i]	= PFJet_isConvertedPhoton[j];
+        }
+      nPFJet = n;
+    }
+
+  n = 0;
+  try
+    {
+       n = indexmap["PFMET"].size();
+    }
+  catch (...)
+    {}
+  if ( n > 0 )
+    {
+      std::vector<int>& index = indexmap["PFMET"];
+      for(int i=0; i < n; ++i)
+        {
+          int j = index[i];
+          PFMET_charge[i]	= PFMET_charge[j];
+          PFMET_p[i]	= PFMET_p[j];
+          PFMET_energy[i]	= PFMET_energy[j];
+          PFMET_et[i]	= PFMET_et[j];
+          PFMET_px[i]	= PFMET_px[j];
+          PFMET_py[i]	= PFMET_py[j];
+          PFMET_pz[i]	= PFMET_pz[j];
+          PFMET_pt[i]	= PFMET_pt[j];
+          PFMET_phi[i]	= PFMET_phi[j];
+          PFMET_eta[i]	= PFMET_eta[j];
+          PFMET_photonEtFraction[i]	= PFMET_photonEtFraction[j];
+          PFMET_photonEt[i]	= PFMET_photonEt[j];
+          PFMET_neutralHadronEtFraction[i]	= PFMET_neutralHadronEtFraction[j];
+          PFMET_neutralHadronEt[i]	= PFMET_neutralHadronEt[j];
+          PFMET_electronEtFraction[i]	= PFMET_electronEtFraction[j];
+          PFMET_electronEt[i]	= PFMET_electronEt[j];
+          PFMET_chargedHadronEtFraction[i]	= PFMET_chargedHadronEtFraction[j];
+          PFMET_chargedHadronEt[i]	= PFMET_chargedHadronEt[j];
+          PFMET_muonEtFraction[i]	= PFMET_muonEtFraction[j];
+          PFMET_muonEt[i]	= PFMET_muonEt[j];
+          PFMET_HFHadronEtFraction[i]	= PFMET_HFHadronEtFraction[j];
+          PFMET_HFHadronEt[i]	= PFMET_HFHadronEt[j];
+          PFMET_HFEMEtFraction[i]	= PFMET_HFEMEtFraction[j];
+          PFMET_HFEMEt[i]	= PFMET_HFEMEt[j];
+          PFMET_NeutralEMEtFraction[i]	= PFMET_NeutralEMEtFraction[j];
+          PFMET_NeutralEMEt[i]	= PFMET_NeutralEMEt[j];
+          PFMET_NeutralHadEtFraction[i]	= PFMET_NeutralHadEtFraction[j];
+          PFMET_NeutralHadEt[i]	= PFMET_NeutralHadEt[j];
+          PFMET_ChargedEMEtFraction[i]	= PFMET_ChargedEMEtFraction[j];
+          PFMET_ChargedEMEt[i]	= PFMET_ChargedEMEt[j];
+          PFMET_ChargedHadEtFraction[i]	= PFMET_ChargedHadEtFraction[j];
+          PFMET_ChargedHadEt[i]	= PFMET_ChargedHadEt[j];
+          PFMET_MuonEtFraction[i]	= PFMET_MuonEtFraction[j];
+          PFMET_MuonEt[i]	= PFMET_MuonEt[j];
+          PFMET_Type6EtFraction[i]	= PFMET_Type6EtFraction[j];
+          PFMET_Type6Et[i]	= PFMET_Type6Et[j];
+          PFMET_Type7EtFraction[i]	= PFMET_Type7EtFraction[j];
+          PFMET_Type7Et[i]	= PFMET_Type7Et[j];
+          PFMET_NeutralEMFraction[i]	= PFMET_NeutralEMFraction[j];
+          PFMET_NeutralHadFraction[i]	= PFMET_NeutralHadFraction[j];
+          PFMET_ChargedEMFraction[i]	= PFMET_ChargedEMFraction[j];
+          PFMET_ChargedHadFraction[i]	= PFMET_ChargedHadFraction[j];
+          PFMET_MuonFraction[i]	= PFMET_MuonFraction[j];
+          PFMET_sumEt[i]	= PFMET_sumEt[j];
+          PFMET_mEtSig[i]	= PFMET_mEtSig[j];
+          PFMET_significance[i]	= PFMET_significance[j];
+          PFMET_e_longitudinal[i]	= PFMET_e_longitudinal[j];
+          PFMET_numberOfTracks[i]	= PFMET_numberOfTracks[j];
+          PFMET_numberOfDaughters[i]	= PFMET_numberOfDaughters[j];
+          PFMET_numberOfMothers[i]	= PFMET_numberOfMothers[j];
+          PFMET_numberOfSourceCandidatePtrs[i]	= PFMET_numberOfSourceCandidatePtrs[j];
+          PFMET_threeCharge[i]	= PFMET_threeCharge[j];
+          PFMET_mass[i]	= PFMET_mass[j];
+          PFMET_massSqr[i]	= PFMET_massSqr[j];
+          PFMET_mt[i]	= PFMET_mt[j];
+          PFMET_mtSqr[i]	= PFMET_mtSqr[j];
+          PFMET_theta[i]	= PFMET_theta[j];
+          PFMET_rapidity[i]	= PFMET_rapidity[j];
+          PFMET_y[i]	= PFMET_y[j];
+          PFMET_vx[i]	= PFMET_vx[j];
+          PFMET_vy[i]	= PFMET_vy[j];
+          PFMET_vz[i]	= PFMET_vz[j];
+          PFMET_pdgId[i]	= PFMET_pdgId[j];
+          PFMET_status[i]	= PFMET_status[j];
+          PFMET_longLived[i]	= PFMET_longLived[j];
+          PFMET_massConstraint[i]	= PFMET_massConstraint[j];
+          PFMET_vertexChi2[i]	= PFMET_vertexChi2[j];
+          PFMET_vertexNdof[i]	= PFMET_vertexNdof[j];
+          PFMET_vertexNormalizedChi2[i]	= PFMET_vertexNormalizedChi2[j];
+          PFMET_hasMasterClone[i]	= PFMET_hasMasterClone[j];
+          PFMET_hasMasterClonePtr[i]	= PFMET_hasMasterClonePtr[j];
+          PFMET_isElectron[i]	= PFMET_isElectron[j];
+          PFMET_isMuon[i]	= PFMET_isMuon[j];
+          PFMET_isStandAloneMuon[i]	= PFMET_isStandAloneMuon[j];
+          PFMET_isGlobalMuon[i]	= PFMET_isGlobalMuon[j];
+          PFMET_isTrackerMuon[i]	= PFMET_isTrackerMuon[j];
+          PFMET_isCaloMuon[i]	= PFMET_isCaloMuon[j];
+          PFMET_isPhoton[i]	= PFMET_isPhoton[j];
+          PFMET_isConvertedPhoton[i]	= PFMET_isConvertedPhoton[j];
+          PFMET_isJet[i]	= PFMET_isJet[j];
+        }
+      nPFMET = n;
+    }
+}
+
+//-----------------------------------------------------------------------------
+// --- Select variables to be read
+//-----------------------------------------------------------------------------
+void selectVariables(itreestream& stream)
+{
+  stream.select("recoGenJet_ak5GenJets.auxiliaryEnergy", GenJet_auxiliaryEnergy);
+  stream.select("recoGenJet_ak5GenJets.charge", GenJet_charge);
+  stream.select("recoGenJet_ak5GenJets.constituentEtaPhiSpread", GenJet_constituentEtaPhiSpread);
+  stream.select("recoGenJet_ak5GenJets.constituentPtDistribution", GenJet_constituentPtDistribution);
+  stream.select("recoGenJet_ak5GenJets.emEnergy", GenJet_emEnergy);
+  stream.select("recoGenJet_ak5GenJets.energy", GenJet_energy);
+  stream.select("recoGenJet_ak5GenJets.et", GenJet_et);
+  stream.select("recoGenJet_ak5GenJets.eta", GenJet_eta);
+  stream.select("recoGenJet_ak5GenJets.etaetaMoment", GenJet_etaetaMoment);
+  stream.select("recoGenJet_ak5GenJets.etaphiMoment", GenJet_etaphiMoment);
+  stream.select("recoGenJet_ak5GenJets.hadEnergy", GenJet_hadEnergy);
+  stream.select("recoGenJet_ak5GenJets.hasMasterClone", GenJet_hasMasterClone);
+  stream.select("recoGenJet_ak5GenJets.hasMasterClonePtr", GenJet_hasMasterClonePtr);
+  stream.select("recoGenJet_ak5GenJets.invisibleEnergy", GenJet_invisibleEnergy);
+  stream.select("recoGenJet_ak5GenJets.isCaloMuon", GenJet_isCaloMuon);
+  stream.select("recoGenJet_ak5GenJets.isConvertedPhoton", GenJet_isConvertedPhoton);
+  stream.select("recoGenJet_ak5GenJets.isElectron", GenJet_isElectron);
+  stream.select("recoGenJet_ak5GenJets.isGlobalMuon", GenJet_isGlobalMuon);
+  stream.select("recoGenJet_ak5GenJets.isJet", GenJet_isJet);
+  stream.select("recoGenJet_ak5GenJets.isMuon", GenJet_isMuon);
+  stream.select("recoGenJet_ak5GenJets.isPhoton", GenJet_isPhoton);
+  stream.select("recoGenJet_ak5GenJets.isStandAloneMuon", GenJet_isStandAloneMuon);
+  stream.select("recoGenJet_ak5GenJets.isTrackerMuon", GenJet_isTrackerMuon);
+  stream.select("recoGenJet_ak5GenJets.jetArea", GenJet_jetArea);
+  stream.select("recoGenJet_ak5GenJets.longLived", GenJet_longLived);
+  stream.select("recoGenJet_ak5GenJets.mass", GenJet_mass);
+  stream.select("recoGenJet_ak5GenJets.massConstraint", GenJet_massConstraint);
+  stream.select("recoGenJet_ak5GenJets.massSqr", GenJet_massSqr);
+  stream.select("recoGenJet_ak5GenJets.maxDistance", GenJet_maxDistance);
+  stream.select("recoGenJet_ak5GenJets.mt", GenJet_mt);
+  stream.select("recoGenJet_ak5GenJets.mtSqr", GenJet_mtSqr);
+  stream.select("recoGenJet_ak5GenJets.nConstituents", GenJet_nConstituents);
+  stream.select("recoGenJet_ak5GenJets.nPasses", GenJet_nPasses);
+  stream.select("recoGenJet_ak5GenJets.numberOfDaughters", GenJet_numberOfDaughters);
+  stream.select("recoGenJet_ak5GenJets.numberOfMothers", GenJet_numberOfMothers);
+  stream.select("recoGenJet_ak5GenJets.numberOfSourceCandidatePtrs", GenJet_numberOfSourceCandidatePtrs);
+  stream.select("recoGenJet_ak5GenJets.p", GenJet_p);
+  stream.select("recoGenJet_ak5GenJets.pdgId", GenJet_pdgId);
+  stream.select("recoGenJet_ak5GenJets.phi", GenJet_phi);
+  stream.select("recoGenJet_ak5GenJets.phiphiMoment", GenJet_phiphiMoment);
+  stream.select("recoGenJet_ak5GenJets.pileup", GenJet_pileup);
+  stream.select("recoGenJet_ak5GenJets.pt", GenJet_pt);
+  stream.select("recoGenJet_ak5GenJets.px", GenJet_px);
+  stream.select("recoGenJet_ak5GenJets.py", GenJet_py);
+  stream.select("recoGenJet_ak5GenJets.pz", GenJet_pz);
+  stream.select("recoGenJet_ak5GenJets.rapidity", GenJet_rapidity);
+  stream.select("recoGenJet_ak5GenJets.status", GenJet_status);
+  stream.select("recoGenJet_ak5GenJets.theta", GenJet_theta);
+  stream.select("recoGenJet_ak5GenJets.threeCharge", GenJet_threeCharge);
+  stream.select("recoGenJet_ak5GenJets.vertexChi2", GenJet_vertexChi2);
+  stream.select("recoGenJet_ak5GenJets.vertexNdof", GenJet_vertexNdof);
+  stream.select("recoGenJet_ak5GenJets.vertexNormalizedChi2", GenJet_vertexNormalizedChi2);
+  stream.select("recoGenJet_ak5GenJets.vx", GenJet_vx);
+  stream.select("recoGenJet_ak5GenJets.vy", GenJet_vy);
+  stream.select("recoGenJet_ak5GenJets.vz", GenJet_vz);
+  stream.select("recoGenJet_ak5GenJets.y", GenJet_y);
+  stream.select("recoGenMET_genMetCalo.ChargedEMEt", GenMET_ChargedEMEt);
+  stream.select("recoGenMET_genMetCalo.ChargedEMEtFraction", GenMET_ChargedEMEtFraction);
+  stream.select("recoGenMET_genMetCalo.ChargedHadEt", GenMET_ChargedHadEt);
+  stream.select("recoGenMET_genMetCalo.ChargedHadEtFraction", GenMET_ChargedHadEtFraction);
+  stream.select("recoGenMET_genMetCalo.InvisibleEt", GenMET_InvisibleEt);
+  stream.select("recoGenMET_genMetCalo.InvisibleEtFraction", GenMET_InvisibleEtFraction);
+  stream.select("recoGenMET_genMetCalo.MuonEt", GenMET_MuonEt);
+  stream.select("recoGenMET_genMetCalo.MuonEtFraction", GenMET_MuonEtFraction);
+  stream.select("recoGenMET_genMetCalo.NeutralEMEt", GenMET_NeutralEMEt);
+  stream.select("recoGenMET_genMetCalo.NeutralEMEtFraction", GenMET_NeutralEMEtFraction);
+  stream.select("recoGenMET_genMetCalo.NeutralHadEt", GenMET_NeutralHadEt);
+  stream.select("recoGenMET_genMetCalo.NeutralHadEtFraction", GenMET_NeutralHadEtFraction);
+  stream.select("recoGenMET_genMetCalo.auxiliaryEnergy", GenMET_auxiliaryEnergy);
+  stream.select("recoGenMET_genMetCalo.charge", GenMET_charge);
+  stream.select("recoGenMET_genMetCalo.e_longitudinal", GenMET_e_longitudinal);
+  stream.select("recoGenMET_genMetCalo.emEnergy", GenMET_emEnergy);
+  stream.select("recoGenMET_genMetCalo.energy", GenMET_energy);
+  stream.select("recoGenMET_genMetCalo.et", GenMET_et);
+  stream.select("recoGenMET_genMetCalo.eta", GenMET_eta);
+  stream.select("recoGenMET_genMetCalo.hadEnergy", GenMET_hadEnergy);
+  stream.select("recoGenMET_genMetCalo.hasMasterClone", GenMET_hasMasterClone);
+  stream.select("recoGenMET_genMetCalo.hasMasterClonePtr", GenMET_hasMasterClonePtr);
+  stream.select("recoGenMET_genMetCalo.invisibleEnergy", GenMET_invisibleEnergy);
+  stream.select("recoGenMET_genMetCalo.isCaloMuon", GenMET_isCaloMuon);
+  stream.select("recoGenMET_genMetCalo.isConvertedPhoton", GenMET_isConvertedPhoton);
+  stream.select("recoGenMET_genMetCalo.isElectron", GenMET_isElectron);
+  stream.select("recoGenMET_genMetCalo.isGlobalMuon", GenMET_isGlobalMuon);
+  stream.select("recoGenMET_genMetCalo.isJet", GenMET_isJet);
+  stream.select("recoGenMET_genMetCalo.isMuon", GenMET_isMuon);
+  stream.select("recoGenMET_genMetCalo.isPhoton", GenMET_isPhoton);
+  stream.select("recoGenMET_genMetCalo.isStandAloneMuon", GenMET_isStandAloneMuon);
+  stream.select("recoGenMET_genMetCalo.isTrackerMuon", GenMET_isTrackerMuon);
+  stream.select("recoGenMET_genMetCalo.longLived", GenMET_longLived);
+  stream.select("recoGenMET_genMetCalo.mEtSig", GenMET_mEtSig);
+  stream.select("recoGenMET_genMetCalo.mass", GenMET_mass);
+  stream.select("recoGenMET_genMetCalo.massConstraint", GenMET_massConstraint);
+  stream.select("recoGenMET_genMetCalo.massSqr", GenMET_massSqr);
+  stream.select("recoGenMET_genMetCalo.mt", GenMET_mt);
+  stream.select("recoGenMET_genMetCalo.mtSqr", GenMET_mtSqr);
+  stream.select("recoGenMET_genMetCalo.numberOfDaughters", GenMET_numberOfDaughters);
+  stream.select("recoGenMET_genMetCalo.numberOfMothers", GenMET_numberOfMothers);
+  stream.select("recoGenMET_genMetCalo.numberOfSourceCandidatePtrs", GenMET_numberOfSourceCandidatePtrs);
+  stream.select("recoGenMET_genMetCalo.numberOfTracks", GenMET_numberOfTracks);
+  stream.select("recoGenMET_genMetCalo.p", GenMET_p);
+  stream.select("recoGenMET_genMetCalo.pdgId", GenMET_pdgId);
+  stream.select("recoGenMET_genMetCalo.phi", GenMET_phi);
+  stream.select("recoGenMET_genMetCalo.pt", GenMET_pt);
+  stream.select("recoGenMET_genMetCalo.px", GenMET_px);
+  stream.select("recoGenMET_genMetCalo.py", GenMET_py);
+  stream.select("recoGenMET_genMetCalo.pz", GenMET_pz);
+  stream.select("recoGenMET_genMetCalo.rapidity", GenMET_rapidity);
+  stream.select("recoGenMET_genMetCalo.significance", GenMET_significance);
+  stream.select("recoGenMET_genMetCalo.status", GenMET_status);
+  stream.select("recoGenMET_genMetCalo.sumEt", GenMET_sumEt);
+  stream.select("recoGenMET_genMetCalo.theta", GenMET_theta);
+  stream.select("recoGenMET_genMetCalo.threeCharge", GenMET_threeCharge);
+  stream.select("recoGenMET_genMetCalo.vertexChi2", GenMET_vertexChi2);
+  stream.select("recoGenMET_genMetCalo.vertexNdof", GenMET_vertexNdof);
+  stream.select("recoGenMET_genMetCalo.vertexNormalizedChi2", GenMET_vertexNormalizedChi2);
+  stream.select("recoGenMET_genMetCalo.vx", GenMET_vx);
+  stream.select("recoGenMET_genMetCalo.vy", GenMET_vy);
+  stream.select("recoGenMET_genMetCalo.vz", GenMET_vz);
+  stream.select("recoGenMET_genMetCalo.y", GenMET_y);
+  stream.select("recoGenParticle_genParticles.charge", GenParticle_charge);
+  stream.select("recoGenParticle_genParticles.collisionId", GenParticle_collisionId);
+  stream.select("recoGenParticle_genParticles.energy", GenParticle_energy);
+  stream.select("recoGenParticle_genParticles.et", GenParticle_et);
+  stream.select("recoGenParticle_genParticles.eta", GenParticle_eta);
+  stream.select("recoGenParticle_genParticles.hasMasterClone", GenParticle_hasMasterClone);
+  stream.select("recoGenParticle_genParticles.hasMasterClonePtr", GenParticle_hasMasterClonePtr);
+  stream.select("recoGenParticle_genParticles.isCaloMuon", GenParticle_isCaloMuon);
+  stream.select("recoGenParticle_genParticles.isConvertedPhoton", GenParticle_isConvertedPhoton);
+  stream.select("recoGenParticle_genParticles.isElectron", GenParticle_isElectron);
+  stream.select("recoGenParticle_genParticles.isGlobalMuon", GenParticle_isGlobalMuon);
+  stream.select("recoGenParticle_genParticles.isJet", GenParticle_isJet);
+  stream.select("recoGenParticle_genParticles.isMuon", GenParticle_isMuon);
+  stream.select("recoGenParticle_genParticles.isPhoton", GenParticle_isPhoton);
+  stream.select("recoGenParticle_genParticles.isStandAloneMuon", GenParticle_isStandAloneMuon);
+  stream.select("recoGenParticle_genParticles.isTrackerMuon", GenParticle_isTrackerMuon);
+  stream.select("recoGenParticle_genParticles.longLived", GenParticle_longLived);
+  stream.select("recoGenParticle_genParticles.mass", GenParticle_mass);
+  stream.select("recoGenParticle_genParticles.massConstraint", GenParticle_massConstraint);
+  stream.select("recoGenParticle_genParticles.massSqr", GenParticle_massSqr);
+  stream.select("recoGenParticle_genParticles.mt", GenParticle_mt);
+  stream.select("recoGenParticle_genParticles.mtSqr", GenParticle_mtSqr);
+  stream.select("recoGenParticle_genParticles.numberOfDaughters", GenParticle_numberOfDaughters);
+  stream.select("recoGenParticle_genParticles.numberOfMothers", GenParticle_numberOfMothers);
+  stream.select("recoGenParticle_genParticles.numberOfSourceCandidatePtrs", GenParticle_numberOfSourceCandidatePtrs);
+  stream.select("recoGenParticle_genParticles.p", GenParticle_p);
+  stream.select("recoGenParticle_genParticles.pdgId", GenParticle_pdgId);
+  stream.select("recoGenParticle_genParticles.phi", GenParticle_phi);
+  stream.select("recoGenParticle_genParticles.pt", GenParticle_pt);
+  stream.select("recoGenParticle_genParticles.px", GenParticle_px);
+  stream.select("recoGenParticle_genParticles.py", GenParticle_py);
+  stream.select("recoGenParticle_genParticles.pz", GenParticle_pz);
+  stream.select("recoGenParticle_genParticles.rapidity", GenParticle_rapidity);
+  stream.select("recoGenParticle_genParticles.status", GenParticle_status);
+  stream.select("recoGenParticle_genParticles.theta", GenParticle_theta);
+  stream.select("recoGenParticle_genParticles.threeCharge", GenParticle_threeCharge);
+  stream.select("recoGenParticle_genParticles.vertexChi2", GenParticle_vertexChi2);
+  stream.select("recoGenParticle_genParticles.vertexNdof", GenParticle_vertexNdof);
+  stream.select("recoGenParticle_genParticles.vertexNormalizedChi2", GenParticle_vertexNormalizedChi2);
+  stream.select("recoGenParticle_genParticles.vx", GenParticle_vx);
+  stream.select("recoGenParticle_genParticles.vy", GenParticle_vy);
+  stream.select("recoGenParticle_genParticles.vz", GenParticle_vz);
+  stream.select("recoGenParticle_genParticles.y", GenParticle_y);
+  stream.select("recoPFJet_ak5PFJets.HFEMEnergy", PFJet_HFEMEnergy);
+  stream.select("recoPFJet_ak5PFJets.HFEMEnergyFraction", PFJet_HFEMEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.HFEMMultiplicity", PFJet_HFEMMultiplicity);
+  stream.select("recoPFJet_ak5PFJets.HFHadronEnergy", PFJet_HFHadronEnergy);
+  stream.select("recoPFJet_ak5PFJets.HFHadronEnergyFraction", PFJet_HFHadronEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.HFHadronMultiplicity", PFJet_HFHadronMultiplicity);
+  stream.select("recoPFJet_ak5PFJets.charge", PFJet_charge);
+  stream.select("recoPFJet_ak5PFJets.chargedEmEnergy", PFJet_chargedEmEnergy);
+  stream.select("recoPFJet_ak5PFJets.chargedEmEnergyFraction", PFJet_chargedEmEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.chargedHadronEnergy", PFJet_chargedHadronEnergy);
+  stream.select("recoPFJet_ak5PFJets.chargedHadronEnergyFraction", PFJet_chargedHadronEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.chargedHadronMultiplicity", PFJet_chargedHadronMultiplicity);
+  stream.select("recoPFJet_ak5PFJets.chargedMuEnergy", PFJet_chargedMuEnergy);
+  stream.select("recoPFJet_ak5PFJets.chargedMuEnergyFraction", PFJet_chargedMuEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.chargedMultiplicity", PFJet_chargedMultiplicity);
+  stream.select("recoPFJet_ak5PFJets.constituentEtaPhiSpread", PFJet_constituentEtaPhiSpread);
+  stream.select("recoPFJet_ak5PFJets.constituentPtDistribution", PFJet_constituentPtDistribution);
+  stream.select("recoPFJet_ak5PFJets.electronEnergy", PFJet_electronEnergy);
+  stream.select("recoPFJet_ak5PFJets.electronEnergyFraction", PFJet_electronEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.electronMultiplicity", PFJet_electronMultiplicity);
+  stream.select("recoPFJet_ak5PFJets.energy", PFJet_energy);
+  stream.select("recoPFJet_ak5PFJets.et", PFJet_et);
+  stream.select("recoPFJet_ak5PFJets.eta", PFJet_eta);
+  stream.select("recoPFJet_ak5PFJets.etaetaMoment", PFJet_etaetaMoment);
+  stream.select("recoPFJet_ak5PFJets.etaphiMoment", PFJet_etaphiMoment);
+  stream.select("recoPFJet_ak5PFJets.hasMasterClone", PFJet_hasMasterClone);
+  stream.select("recoPFJet_ak5PFJets.hasMasterClonePtr", PFJet_hasMasterClonePtr);
+  stream.select("recoPFJet_ak5PFJets.isCaloMuon", PFJet_isCaloMuon);
+  stream.select("recoPFJet_ak5PFJets.isConvertedPhoton", PFJet_isConvertedPhoton);
+  stream.select("recoPFJet_ak5PFJets.isElectron", PFJet_isElectron);
+  stream.select("recoPFJet_ak5PFJets.isGlobalMuon", PFJet_isGlobalMuon);
+  stream.select("recoPFJet_ak5PFJets.isJet", PFJet_isJet);
+  stream.select("recoPFJet_ak5PFJets.isMuon", PFJet_isMuon);
+  stream.select("recoPFJet_ak5PFJets.isPhoton", PFJet_isPhoton);
+  stream.select("recoPFJet_ak5PFJets.isStandAloneMuon", PFJet_isStandAloneMuon);
+  stream.select("recoPFJet_ak5PFJets.isTrackerMuon", PFJet_isTrackerMuon);
+  stream.select("recoPFJet_ak5PFJets.jetArea", PFJet_jetArea);
+  stream.select("recoPFJet_ak5PFJets.longLived", PFJet_longLived);
+  stream.select("recoPFJet_ak5PFJets.mass", PFJet_mass);
+  stream.select("recoPFJet_ak5PFJets.massConstraint", PFJet_massConstraint);
+  stream.select("recoPFJet_ak5PFJets.massSqr", PFJet_massSqr);
+  stream.select("recoPFJet_ak5PFJets.maxDistance", PFJet_maxDistance);
+  stream.select("recoPFJet_ak5PFJets.mt", PFJet_mt);
+  stream.select("recoPFJet_ak5PFJets.mtSqr", PFJet_mtSqr);
+  stream.select("recoPFJet_ak5PFJets.muonEnergy", PFJet_muonEnergy);
+  stream.select("recoPFJet_ak5PFJets.muonEnergyFraction", PFJet_muonEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.muonMultiplicity", PFJet_muonMultiplicity);
+  stream.select("recoPFJet_ak5PFJets.nConstituents", PFJet_nConstituents);
+  stream.select("recoPFJet_ak5PFJets.nPasses", PFJet_nPasses);
+  stream.select("recoPFJet_ak5PFJets.neutralEmEnergy", PFJet_neutralEmEnergy);
+  stream.select("recoPFJet_ak5PFJets.neutralEmEnergyFraction", PFJet_neutralEmEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.neutralHadronEnergy", PFJet_neutralHadronEnergy);
+  stream.select("recoPFJet_ak5PFJets.neutralHadronEnergyFraction", PFJet_neutralHadronEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.neutralHadronMultiplicity", PFJet_neutralHadronMultiplicity);
+  stream.select("recoPFJet_ak5PFJets.neutralMultiplicity", PFJet_neutralMultiplicity);
+  stream.select("recoPFJet_ak5PFJets.numberOfDaughters", PFJet_numberOfDaughters);
+  stream.select("recoPFJet_ak5PFJets.numberOfMothers", PFJet_numberOfMothers);
+  stream.select("recoPFJet_ak5PFJets.numberOfSourceCandidatePtrs", PFJet_numberOfSourceCandidatePtrs);
+  stream.select("recoPFJet_ak5PFJets.p", PFJet_p);
+  stream.select("recoPFJet_ak5PFJets.pdgId", PFJet_pdgId);
+  stream.select("recoPFJet_ak5PFJets.phi", PFJet_phi);
+  stream.select("recoPFJet_ak5PFJets.phiphiMoment", PFJet_phiphiMoment);
+  stream.select("recoPFJet_ak5PFJets.photonEnergy", PFJet_photonEnergy);
+  stream.select("recoPFJet_ak5PFJets.photonEnergyFraction", PFJet_photonEnergyFraction);
+  stream.select("recoPFJet_ak5PFJets.photonMultiplicity", PFJet_photonMultiplicity);
+  stream.select("recoPFJet_ak5PFJets.pileup", PFJet_pileup);
+  stream.select("recoPFJet_ak5PFJets.pt", PFJet_pt);
+  stream.select("recoPFJet_ak5PFJets.px", PFJet_px);
+  stream.select("recoPFJet_ak5PFJets.py", PFJet_py);
+  stream.select("recoPFJet_ak5PFJets.pz", PFJet_pz);
+  stream.select("recoPFJet_ak5PFJets.rapidity", PFJet_rapidity);
+  stream.select("recoPFJet_ak5PFJets.status", PFJet_status);
+  stream.select("recoPFJet_ak5PFJets.theta", PFJet_theta);
+  stream.select("recoPFJet_ak5PFJets.threeCharge", PFJet_threeCharge);
+  stream.select("recoPFJet_ak5PFJets.vertexChi2", PFJet_vertexChi2);
+  stream.select("recoPFJet_ak5PFJets.vertexNdof", PFJet_vertexNdof);
+  stream.select("recoPFJet_ak5PFJets.vertexNormalizedChi2", PFJet_vertexNormalizedChi2);
+  stream.select("recoPFJet_ak5PFJets.vx", PFJet_vx);
+  stream.select("recoPFJet_ak5PFJets.vy", PFJet_vy);
+  stream.select("recoPFJet_ak5PFJets.vz", PFJet_vz);
+  stream.select("recoPFJet_ak5PFJets.y", PFJet_y);
+  stream.select("recoPFMET_pfMet.ChargedEMEt", PFMET_ChargedEMEt);
+  stream.select("recoPFMET_pfMet.ChargedEMEtFraction", PFMET_ChargedEMEtFraction);
+  stream.select("recoPFMET_pfMet.ChargedEMFraction", PFMET_ChargedEMFraction);
+  stream.select("recoPFMET_pfMet.ChargedHadEt", PFMET_ChargedHadEt);
+  stream.select("recoPFMET_pfMet.ChargedHadEtFraction", PFMET_ChargedHadEtFraction);
+  stream.select("recoPFMET_pfMet.ChargedHadFraction", PFMET_ChargedHadFraction);
+  stream.select("recoPFMET_pfMet.HFEMEt", PFMET_HFEMEt);
+  stream.select("recoPFMET_pfMet.HFEMEtFraction", PFMET_HFEMEtFraction);
+  stream.select("recoPFMET_pfMet.HFHadronEt", PFMET_HFHadronEt);
+  stream.select("recoPFMET_pfMet.HFHadronEtFraction", PFMET_HFHadronEtFraction);
+  stream.select("recoPFMET_pfMet.MuonEt", PFMET_MuonEt);
+  stream.select("recoPFMET_pfMet.MuonEtFraction", PFMET_MuonEtFraction);
+  stream.select("recoPFMET_pfMet.MuonFraction", PFMET_MuonFraction);
+  stream.select("recoPFMET_pfMet.NeutralEMEt", PFMET_NeutralEMEt);
+  stream.select("recoPFMET_pfMet.NeutralEMEtFraction", PFMET_NeutralEMEtFraction);
+  stream.select("recoPFMET_pfMet.NeutralEMFraction", PFMET_NeutralEMFraction);
+  stream.select("recoPFMET_pfMet.NeutralHadEt", PFMET_NeutralHadEt);
+  stream.select("recoPFMET_pfMet.NeutralHadEtFraction", PFMET_NeutralHadEtFraction);
+  stream.select("recoPFMET_pfMet.NeutralHadFraction", PFMET_NeutralHadFraction);
+  stream.select("recoPFMET_pfMet.Type6Et", PFMET_Type6Et);
+  stream.select("recoPFMET_pfMet.Type6EtFraction", PFMET_Type6EtFraction);
+  stream.select("recoPFMET_pfMet.Type7Et", PFMET_Type7Et);
+  stream.select("recoPFMET_pfMet.Type7EtFraction", PFMET_Type7EtFraction);
+  stream.select("recoPFMET_pfMet.charge", PFMET_charge);
+  stream.select("recoPFMET_pfMet.chargedHadronEt", PFMET_chargedHadronEt);
+  stream.select("recoPFMET_pfMet.chargedHadronEtFraction", PFMET_chargedHadronEtFraction);
+  stream.select("recoPFMET_pfMet.e_longitudinal", PFMET_e_longitudinal);
+  stream.select("recoPFMET_pfMet.electronEt", PFMET_electronEt);
+  stream.select("recoPFMET_pfMet.electronEtFraction", PFMET_electronEtFraction);
+  stream.select("recoPFMET_pfMet.energy", PFMET_energy);
+  stream.select("recoPFMET_pfMet.et", PFMET_et);
+  stream.select("recoPFMET_pfMet.eta", PFMET_eta);
+  stream.select("recoPFMET_pfMet.hasMasterClone", PFMET_hasMasterClone);
+  stream.select("recoPFMET_pfMet.hasMasterClonePtr", PFMET_hasMasterClonePtr);
+  stream.select("recoPFMET_pfMet.isCaloMuon", PFMET_isCaloMuon);
+  stream.select("recoPFMET_pfMet.isConvertedPhoton", PFMET_isConvertedPhoton);
+  stream.select("recoPFMET_pfMet.isElectron", PFMET_isElectron);
+  stream.select("recoPFMET_pfMet.isGlobalMuon", PFMET_isGlobalMuon);
+  stream.select("recoPFMET_pfMet.isJet", PFMET_isJet);
+  stream.select("recoPFMET_pfMet.isMuon", PFMET_isMuon);
+  stream.select("recoPFMET_pfMet.isPhoton", PFMET_isPhoton);
+  stream.select("recoPFMET_pfMet.isStandAloneMuon", PFMET_isStandAloneMuon);
+  stream.select("recoPFMET_pfMet.isTrackerMuon", PFMET_isTrackerMuon);
+  stream.select("recoPFMET_pfMet.longLived", PFMET_longLived);
+  stream.select("recoPFMET_pfMet.mEtSig", PFMET_mEtSig);
+  stream.select("recoPFMET_pfMet.mass", PFMET_mass);
+  stream.select("recoPFMET_pfMet.massConstraint", PFMET_massConstraint);
+  stream.select("recoPFMET_pfMet.massSqr", PFMET_massSqr);
+  stream.select("recoPFMET_pfMet.mt", PFMET_mt);
+  stream.select("recoPFMET_pfMet.mtSqr", PFMET_mtSqr);
+  stream.select("recoPFMET_pfMet.muonEt", PFMET_muonEt);
+  stream.select("recoPFMET_pfMet.muonEtFraction", PFMET_muonEtFraction);
+  stream.select("recoPFMET_pfMet.neutralHadronEt", PFMET_neutralHadronEt);
+  stream.select("recoPFMET_pfMet.neutralHadronEtFraction", PFMET_neutralHadronEtFraction);
+  stream.select("recoPFMET_pfMet.numberOfDaughters", PFMET_numberOfDaughters);
+  stream.select("recoPFMET_pfMet.numberOfMothers", PFMET_numberOfMothers);
+  stream.select("recoPFMET_pfMet.numberOfSourceCandidatePtrs", PFMET_numberOfSourceCandidatePtrs);
+  stream.select("recoPFMET_pfMet.numberOfTracks", PFMET_numberOfTracks);
+  stream.select("recoPFMET_pfMet.p", PFMET_p);
+  stream.select("recoPFMET_pfMet.pdgId", PFMET_pdgId);
+  stream.select("recoPFMET_pfMet.phi", PFMET_phi);
+  stream.select("recoPFMET_pfMet.photonEt", PFMET_photonEt);
+  stream.select("recoPFMET_pfMet.photonEtFraction", PFMET_photonEtFraction);
+  stream.select("recoPFMET_pfMet.pt", PFMET_pt);
+  stream.select("recoPFMET_pfMet.px", PFMET_px);
+  stream.select("recoPFMET_pfMet.py", PFMET_py);
+  stream.select("recoPFMET_pfMet.pz", PFMET_pz);
+  stream.select("recoPFMET_pfMet.rapidity", PFMET_rapidity);
+  stream.select("recoPFMET_pfMet.significance", PFMET_significance);
+  stream.select("recoPFMET_pfMet.status", PFMET_status);
+  stream.select("recoPFMET_pfMet.sumEt", PFMET_sumEt);
+  stream.select("recoPFMET_pfMet.theta", PFMET_theta);
+  stream.select("recoPFMET_pfMet.threeCharge", PFMET_threeCharge);
+  stream.select("recoPFMET_pfMet.vertexChi2", PFMET_vertexChi2);
+  stream.select("recoPFMET_pfMet.vertexNdof", PFMET_vertexNdof);
+  stream.select("recoPFMET_pfMet.vertexNormalizedChi2", PFMET_vertexNormalizedChi2);
+  stream.select("recoPFMET_pfMet.vx", PFMET_vx);
+  stream.select("recoPFMET_pfMet.vy", PFMET_vy);
+  stream.select("recoPFMET_pfMet.vz", PFMET_vz);
+  stream.select("recoPFMET_pfMet.y", PFMET_y);
+  stream.select("edmTriggerResults_TriggerResults.accept", TriggerResults_accept);
+  stream.select("edmTriggerResults_TriggerResults.error", TriggerResults_error);
+  stream.select("edmTriggerResults_TriggerResults.wasrun", TriggerResults_wasrun);
+  stream.select("nrecoGenJet_ak5GenJets", nGenJet);
+  stream.select("nrecoGenMET_genMetCalo", nGenMET);
+  stream.select("nrecoGenParticle_genParticles", nGenParticle);
+  stream.select("nrecoPFJet_ak5PFJets", nPFJet);
+  stream.select("nrecoPFMET_pfMet", nPFMET);
+  stream.select("edmTriggerResults_TriggerResults.size", nTriggerResults);
+
+}
+}; // end namespace evt
+#endif
