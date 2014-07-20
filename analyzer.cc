@@ -182,7 +182,23 @@ TH1F h39("wneudeltar","W-Neutrino Delta R; Delta R (rad);Events",50,0,5);
 TH1F h40("ltwdeltar","Top-W Delta R; Delta R (rad);Events",50,0,5);
 TH1F h41("ltbdeltar","Top-B Delta R; Delta R (rad);Events",50,0,5);
 
-TH1F h42("bjetdeltar"," Delta R; Delta R ;Events",500,0,5);
+TH1F h42("tagjetdeltar"," Tagjet Delta R; Delta R ;Events",500,0,5);
+TH1F h43("tagjetdeltar<0.1"," Tagjet Delta R < 0.1; Delta R ;Events",500,0,5);
+TH1F h44("tagjetdeltar<0.3"," Tagjet Delta R < 0.3; Delta R ;Events",500,0,5);
+TH1F h45("tagjetdeltar<1"," Tagjet Delta R < 1; Delta R ;Events",500,0,5);
+TH1F h46("bjetdeltar"," B-jet Delta R; Delta R ;Events",500,0,5);
+TH1F h47("bjetdeltar<0.1"," B-jet Delta R < 0.1; Delta R ;Events",500,0,5);
+TH1F h48("bjetdeltar<0.3"," B-jetDelta R < 0.3; Delta R ;Events",500,0,5);
+TH1F h49("bjetdeltar<1"," B-jet Delta R < 1; Delta R ;Events",500,0,5);
+
+TH1F h50("tagjeta","Tag-jet Eta;  Eta ;Events",100,-5,5);
+TH1F h51("tagjphi","Tag-jet  Phi; Phi (rad);Events",80,-4,4);
+TH1F h52("bjeteta","B-jet Eta; Eta ;Events",100,-5,5);
+TH1F h53("bjetphi","B-jet Phi;  Phi (rad);Events",80,-4,4);
+TH1F h54("tagjetetar01","Tag-jet R<0.1 Eta; Eta ;Events",100,-5,5);
+TH1F h55("tagjetphir01","Tag-jet R<0.1 Phi; Phi (rad);Events",80,-4,4);
+TH1F h56("bjetetar01","B-jet R<0.1 Eta; Eta ;Events",100,-5,5);
+TH1F h57("bjetphir01","B-jet R<0.1 Phi; Phi (rad);Events",80,-4,4);
 
 
 TH2F *Wlphiphi  = new TH2F("WlPhiphi","W Phi vs l Phi ; W-Phi ;l-Phi ",80,-4,4,80,-4,4);
@@ -258,36 +274,120 @@ TH2F *tBetaeta  = new TH2F("tbEtaeta","Top Eta vs b Eta ; Top-Eta ;b-Eta ",80,-8
           }
 //int tjetdeltaphi[];
 int j=GenJet.size();
-float tjetdeltaphi[j];
-float tjetdeltaeta[j];
-float tjetdeltar[j];
-int myjet ;
-for (int c=0; c<j ; c++) {
-		
-tjetdeltaphi[c]=((GenParticle[mytb].phi)-(GenJet[c].phi));
-if (tjetdeltaphi[c]>3.14)
-{
-tjetdeltaphi[c]= 3.14-tjetdeltaphi[c];
-}
-tjetdeltaeta[c]=((GenParticle[mytb].eta)-(GenJet[c].eta));
-if(tjetdeltaeta[c]<0)
-{
-tjetdeltaeta[c]=-tjetdeltaeta[c];
-}
- tjetdeltar[c]= TMath::Sqrt((tjetdeltaphi[c]*tjetdeltaphi[c])+(tjetdeltaeta[c]*tjetdeltaeta[c]));
-cout<<"Jetr.....:"  << tjetdeltar[c] <<" jetphi  : "<<tjetdeltaphi[c]<<"  jeteta    : "<<tjetdeltaeta[c]<< endl;
-}
-float  minimum = tjetdeltar[0];
+double tagjetdeltaphi[j];
+double tagjetdeltaeta[j];
+double tagjetdeltar[j];
+double bjetdeltaphi[j];
+double bjetdeltaeta[j];
+double bjetdeltar[j];
+int tagjet=0 ;
+int bjet=0 ;
+	for (int c=0; c<j ; c++) 
+		{
+		tagjetdeltaphi[c]=((GenParticle[myj].phi)-(GenJet[c].phi));
+		tagjetdeltaphi[c]=abs(tagjetdeltaphi[c]);
+			if (tagjetdeltaphi[c]>3.14)
+				{
+					tagjetdeltaphi[c]= 6.28-(tagjetdeltaphi[c]);
+				}
+		tagjetdeltaeta[c]=((GenParticle[myj].eta)-(GenJet[c].eta));
+			if(tagjetdeltaeta[c]<0)
+				{
+					tagjetdeltaeta[c]=-tagjetdeltaeta[c];
+				}	
+ 		tagjetdeltar[c]= TMath::Sqrt((tagjetdeltaphi[c]*tagjetdeltaphi[c])+(tagjetdeltaeta[c]*tagjetdeltaeta[c]));
+		//cout<<"Jetr.....:"  << tagjetdeltar[c] <<" jetphi  : "<<tagjetdeltaphi[c]<<" myjphi : "<<GenParticle[myj].phi<<" jetphi : " << GenJet[c].phi << " jeteta    : "<<tagjetdeltaeta[c]<< endl;
+		}
+		double  mintag = tagjetdeltar[0];
+			for (int k = 1 ; k < j ; k++ ) 
+    			{
+       				if ( tagjetdeltar[k] < mintag ) 
+        				{	
+           					mintag = tagjetdeltar[k];
+						tagjet=k ;	
+         				}
+			}
+        	h42. Fill(mintag);
+	if (mintag<0.1 )
+                {
+                h43.Fill(mintag);
+//		int o ;
+  //              o++;
+//		cout<<" Number of Events deltar<0.1  : "<<o<<endl;
+        	h54.Fill(GenJet[tagjet].eta);
+                h55.Fill(GenJet[tagjet].phi);
+		}	
+	if (mintag<0.3 )
+                {
+            	h44.Fill(mintag);
+	//	int z ;
+	//	z++;
+	//	cout<<" Number of Events deltar<0.3  : "<<z<<endl;
+		}	
+	if (mintag<1 )
+		{
+		h45.Fill(mintag);
+	//	cout<<"  mintag   :  "<<minimumtag<<"  jettagdeltar  : "<<tagjetdeltar[tagjet]<<endl;
+	//	cout<<" myjphi : "<<GenParticle[myj].phi<<" jetphi : " << GenJet[tagjet].phi <<  "  phi : " <<tagjetdeltaphi[tagjet]<<endl;
+	//	cout<<" myjeta : "<<GenParticle[myj].eta<<" jeteta : " << GenJet[tagjet].eta <<	 "  eta ; " <<tagjetdeltaeta[tagjet]<<endl ;
+		}
 
-    for (int k = 1 ; k < j ; k++ ) 
-    {
-       if ( tjetdeltar[k] < minimum ) 
-        {
-           minimum = tjetdeltar[k];
-         }
-}
-     
-cout<<minimum<<" phi : " <<tjetdeltaphi[myjet]<<"   eta  :  "<<tjetdeltaeta[myjet]<<endl;
+
+        for (int b=0; b<j ; b++)
+                {
+                bjetdeltaphi[b]=((GenParticle[mytb].phi)-(GenJet[b].phi));
+                bjetdeltaphi[b]=abs(bjetdeltaphi[b]);
+                        if (bjetdeltaphi[b]>3.14)
+                                {
+                                        bjetdeltaphi[b]= 6.28-(bjetdeltaphi[b]);
+                                }
+                bjetdeltaeta[b]=((GenParticle[mytb].eta)-(GenJet[b].eta));
+                        if(bjetdeltaeta[b]<0)
+                                {
+                                        bjetdeltaeta[b]=-bjetdeltaeta[b];
+                                }
+                bjetdeltar[b]= TMath::Sqrt((bjetdeltaphi[b]*bjetdeltaphi[b])+(bjetdeltaeta[b]*bjetdeltaeta[b]));
+                //cout<<"Jetr.....:"  << bjetdeltar[b] <<" bjetphi  : "<<bjetdeltaphi[b]<<" mytbphi : "<<GenParticle[mytb].phi<<" bjetphi : " << 
+                }
+                double  minb = bjetdeltar[0];
+                        for (int h = 1 ; h < j ; h++ )
+                        {
+                                if ( bjetdeltar[h] < minb )
+                                        {
+                                                minb = bjetdeltar[h];
+                                                bjet=h ;
+                                        }
+                        }
+                h46. Fill(minb);
+	if (minb<0.1 )
+                {
+                h47.Fill(minb);
+          //      int g ;
+            //    g++;
+              //  cout<<" Number of Events deltar<0.1  : "<<g<<endl;
+		h56.Fill(GenJet[bjet].eta);
+		h57.Fill(GenJet[bjet].phi);
+        	}
+	if (minb<0.3 )
+                {
+                h48.Fill(minb);
+          //      int f ;
+            //    f++;
+              //  cout<<" Number of Events deltar<0.3  : "<<f<<endl;
+        	}
+	if (minb<1 )
+                {
+                h49.Fill(minb);
+        //      cout<<"  mintag   :  "<<minimumtag<<"  jettagdeltar  : "<<tagjetdeltar[tagjet]<<endl;
+        //      cout<<" myjphi : "<<GenParticle[myj].phi<<" jetphi : " << GenJet[tagjet].phi <<  "  phi : " <<tagjetdeltaphi[tagjet]<<endl;
+        //      cout<<" myjeta : "<<GenParticle[myj].eta<<" jeteta : " << GenJet[tagjet].eta <<  "  eta ; " <<tagjetdeltaeta[tagjet]<<endl ;
+                }
+
+		h50.Fill(GenJet[tagjet].eta);
+                h51.Fill(GenJet[tagjet].phi);
+		h52.Fill(GenJet[bjet].eta);
+                h53.Fill(GenJet[bjet].phi);
+
 
 
 
@@ -549,9 +649,9 @@ h38. Fill(Wldeltar);
 h39. Fill(Wneudeltar);
 h40. Fill(ltWdeltar);
 h41. Fill(ltBdeltar);	
-h42. Fill(minimum);
+//h42. Fill(minimum);
 //hpxpy->SetLineColor(kRed);
-	
+//h43. Fill(minimumtag);	
   // ---------------------
 	  // -- fill histograms --
 	  // ---------------------	  
