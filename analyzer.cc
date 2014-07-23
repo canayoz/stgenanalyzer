@@ -22,7 +22,7 @@ using namespace evt;
 int main(int argc, char** argv)
 {
   // Get file list and histogram filename from command line
-
+int r;
   commandLine cmdline;
   decodeCommandLine(argc, argv, cmdline);
 
@@ -137,22 +137,22 @@ pdg[22]="gamma";
 pdg[23]="Z";
 pdg[24]="W+";
   //nevents=2;
-TH1F h1("TopPT","TOP Pt;P\_{t} (GeV);Events/4GeV",50,0,200);
-TH1F h2("TopETA","TOP eta; #eta;Events",20,0,7);
-TH1F h3("BbarPT","\_${b}$ Pt;P\_{t} (GeV);Events/4GeV",50,0,200);
-TH1F h4("BbarETA","\_${b}$ eta; #eta;Events",20,0,7);
-TH1F h5("TagJetPT","Tagging Jet Pt;P\_{t} (GeV);Events/4GeV",50,0,200);
-TH1F h6("TagJetETA","Tagging Jet eta; #eta;Events",20,0,7);
-TH1F h7("bTopPT","bTop Pt;P\_{t} (GeV);Events/4GeV",50,0,200);
-TH1F h8("bTopETA","bTop eta; #eta;Events",20,0,7);
-TH1F h9("W-PT","W Pt;P\_{t} (GeV);Events/4GeV",50,0,200);
-TH1F h10("W-ETA","W-Boson eta; #eta;Events",20,0,7);
-TH1F h11("lepPT","Lepton Pt;P\_{t} (GeV);Events/4GeV",50,0,200);
-TH1F h12("lepETA","Lepton eta; #eta;Events",20,0,7);
-TH1F h13("nuPT","Neutrino Pt;P\_{t} (GeV);Events/4GeV",50,0,200);
-TH1F h14("nuETA","Neutrino eta; #eta;Events",20,0,7);
-TH1F h15("lTopPT","Last Top Pt;P\_{t} (GeV);Events/4GeV",50,0,200);
-TH1F h16("lTopETA","Last Top eta; #eta;Events",20,0,7);
+TH1F h1("TopPT","TOP Pt;P\_{t} (GeV);Events/2GeV",150,0,300) ;
+TH1F h2("TopETA","TOP eta; #eta;Events",60,0,6) ;
+TH1F h3("BbarPT","\_${b}$ Pt;P\_{t} (GeV);Events/2GeV",100,0,200) ;
+TH1F h4("BbarETA","\_${b}$ eta; #eta;Events",60,0,6) ;
+TH1F h5("TagJetPT","Tagging Jet Pt;P\_{t} (GeV);Events/2GeV",100,0,200) ;
+TH1F h6("TagJetETA","Tagging Jet eta; #eta;Events",60,0,6) ;
+TH1F h7("bTopPT","B Pt;P\_{t} (GeV);Arbitrary Units",100,0,200) ;
+TH1F h8("bTopETA","B Eta; #eta;Arbitrary Units",60,0,6) ;
+TH1F h9("W-PT","W Pt;P\_{t} (GeV);Arbitrary Units",150,0,300) ;
+TH1F h10("W-ETA","W-Boson eta; #eta;Arbitrary Units",60,0,6) ;
+TH1F h11("lepPT","Lepton Pt;P\_{t} (GeV);Events/2GeV",100,0,200) ;
+TH1F h12("lepETA","Lepton eta; #eta;Events",60,0,6) ;
+TH1F h13("nuPT","Neutrino Pt;P\_{t} (GeV);Events/2GeV",100,0,200);
+TH1F h14("nuETA","Neutrino eta; #eta;Events",60,0,6);
+TH1F h15("lTopPT","Last Top Pt;P\_{t} (GeV);Events/2GeV",150,0,300);
+TH1F h16("lTopETA","Last Top eta; #eta;Events",60,-6,6);
 TH1F h17("reTm","Reconstructed Top Mass ; Mass (GeV);Events/0.5GeV",100,150,200);
 TH1F h18("tTm","Reconstructed Top Mass from its Energy Momentum; Mass (GeV);Events/0.5GeV",100,150,200);
 TH1F h19("Tm","Real Top Mass; Mass (GeV);Events/0.5GeV",100,150,200);
@@ -171,7 +171,8 @@ TH1F h32("ltWdeltaeta","Last Top - W Delta Eta; Delta Eta (rad);Events",50,0,5);
 TH1F h33("ltWdeltaphi","Last Top - W Delta Phi; Delta Phi (rad);Events",50,0,5);
 TH1F h34("ltBdeltaeta","Last Top - B Delta Eta; Delta Eta (rad);Events",50,0,5);
 TH1F h35("ltBdeltaphi","Last Top - B Delta Phi; Delta Phi (rad);Events",50,0,5);
-
+TH1F h68("lepCutPt","lepCutPt; P\_{t};Events",250,0,500);
+TH1F h69("lepCutEta","lepCutEta; #eta ;Events",160,-8,8);
 
 
 
@@ -200,6 +201,16 @@ TH1F h55("tagjetphir01","Tag-jet R<0.1 Phi; Phi (rad);Events",80,-4,4);
 TH1F h56("bjetetar01","B-jet R<0.1 Eta; Eta ;Events",100,-5,5);
 TH1F h57("bjetphir01","B-jet R<0.1 Phi; Phi (rad);Events",80,-4,4);
 
+TH1F h58("tagjetetar01","Tag-jet R>0.1 Eta; Eta ;Events",100,-8,8);
+TH1F h59("tagjetetar03","Tag-jet R>0.3 Eta; Eta ;Events",100,-8,8);
+TH1F h60("bjetetar01","B-jet R>0.1 Eta; Eta ;Events",100,-8,8);
+TH1F h61("bjetetar03","B-jet R>0.3 Eta; Eta ;Events",100,-8,8);
+TH1F h62("TagJetPT01","Tagging Jet Pt R>0.1 ;P\_{t} (GeV);Events/1GeV",200,0,200);
+TH1F h63("TagJetPT03","Tagging Jet Pt R>0.3 ;P\_{t} (GeV);Events/1GeV",200,0,200);
+TH1F h64("BJetPT01","B Jet Pt R>0.1;P\_{t} (GeV);Events/1GeV",200,0,200);
+TH1F h65("BJetPT03","B Jet Pt R>0.3;P\_{t} (GeV);Events/1GeV",200,0,200);
+
+TH1F h66("leppt","Lepton Pt ;P\_{t} (GeV);Events/1GeV",200,0,200);   
 
 TH2F *Wlphiphi  = new TH2F("WlPhiphi","W Phi vs l Phi ; W-Phi ;l-Phi ",80,-4,4,80,-4,4);
 TH2F *Wletaeta  = new TH2F("WlEtaeta","W Eta vs l Eta ; W-Eta ;l-Eta ",80,-8,8,80,-8,8);
@@ -290,11 +301,8 @@ int bjet=0 ;
 				{
 					tagjetdeltaphi[c]= 6.28-(tagjetdeltaphi[c]);
 				}
-		tagjetdeltaeta[c]=((GenParticle[myj].eta)-(GenJet[c].eta));
-			if(tagjetdeltaeta[c]<0)
-				{
-					tagjetdeltaeta[c]=-tagjetdeltaeta[c];
-				}	
+		tagjetdeltaeta[c]=((GenParticle[myj].eta)-(GenJet[c].eta));				
+		tagjetdeltaeta[c]=abs(tagjetdeltaeta[c])	;
  		tagjetdeltar[c]= TMath::Sqrt((tagjetdeltaphi[c]*tagjetdeltaphi[c])+(tagjetdeltaeta[c]*tagjetdeltaeta[c]));
 		//cout<<"Jetr.....:"  << tagjetdeltar[c] <<" jetphi  : "<<tagjetdeltaphi[c]<<" myjphi : "<<GenParticle[myj].phi<<" jetphi : " << GenJet[c].phi << " jeteta    : "<<tagjetdeltaeta[c]<< endl;
 		}
@@ -331,8 +339,16 @@ int bjet=0 ;
 	//	cout<<" myjphi : "<<GenParticle[myj].phi<<" jetphi : " << GenJet[tagjet].phi <<  "  phi : " <<tagjetdeltaphi[tagjet]<<endl;
 	//	cout<<" myjeta : "<<GenParticle[myj].eta<<" jeteta : " << GenJet[tagjet].eta <<	 "  eta ; " <<tagjetdeltaeta[tagjet]<<endl ;
 		}
-
-
+	if(mintag >0.1)
+	{
+	h58.Fill(GenParticle[myj].eta);
+	h62.Fill(GenParticle[myj].pt);
+	}
+	if(mintag >0.3)
+        {
+        h59.Fill(GenParticle[myj].eta);
+        h63.Fill(GenParticle[myj].pt);
+        }   
         for (int b=0; b<j ; b++)
                 {
                 bjetdeltaphi[b]=((GenParticle[mytb].phi)-(GenJet[b].phi));
@@ -382,6 +398,17 @@ int bjet=0 ;
         //      cout<<" myjphi : "<<GenParticle[myj].phi<<" jetphi : " << GenJet[tagjet].phi <<  "  phi : " <<tagjetdeltaphi[tagjet]<<endl;
         //      cout<<" myjeta : "<<GenParticle[myj].eta<<" jeteta : " << GenJet[tagjet].eta <<  "  eta ; " <<tagjetdeltaeta[tagjet]<<endl ;
                 }
+	if(minb >0.1)
+        {
+        h60.Fill(GenParticle[mytb].eta);
+        h64.Fill(GenParticle[mytb].pt);
+        }
+        if(minb >0.3)
+        {
+        h61.Fill(GenParticle[mytb].eta);
+        h65.Fill(GenParticle[mytb].pt);
+        }
+
 
 		h50.Fill(GenJet[tagjet].eta);
                 h51.Fill(GenJet[tagjet].phi);
@@ -599,30 +626,47 @@ GenParticle[mytW].pt << " - eta:" << GenParticle[mytW].eta << endl
 
 	   */
 	  // ---------------------
-	 
+//int r ;
+	if( GenParticle[myWl].pt>20 && (abs(GenParticle[myWl].eta))<2.5 
+&& GenParticle[myj].pt>20 && GenParticle[mytb].pt>20 && 
+GenMET[0].pt>20 && (abs(GenParticle[myj].eta))<4 && 
+(abs(GenParticle[mytb].eta))<4)
+	{
+	h66. Fill(GenParticle[myWl].pt);
+//	int r ;
+	r++ ;
+//	double k=(r/nevents);
+//	cout<<k<<"  sadad   "<<r<<endl;
+	} 
+	if(GenParticle[myWl].pt>20 && (abs(GenParticle[myWl].eta)<2.5))
+	{
+	h68. Fill(GenParticle[myWl].pt);
+	h69. Fill(abs(GenParticle[myWl].eta));
+	} 
+
 	h1. Fill(GenParticle[myT].pt);
-	h2. Fill(GenParticle[myT].eta);
+	h2. Fill(abs(GenParticle[myT].eta));
 	 
         h3. Fill(GenParticle[mybbar].pt);
-        h4. Fill(GenParticle[mybbar].eta);
+        h4. Fill(abs(GenParticle[mybbar].eta));
 	 
         h5. Fill(GenParticle[myj].pt);
-        h6. Fill(GenParticle[myj].eta);
+        h6. Fill(abs(GenParticle[myj].eta));
 	 
         h7. Fill(GenParticle[mytb].pt);
-        h8. Fill(GenParticle[mytb].eta);
+        h8. Fill(abs(GenParticle[mytb].eta));
 	 
         h9. Fill(GenParticle[mytW].pt);
-        h10. Fill(GenParticle[mytW].eta);
+        h10. Fill(abs(GenParticle[mytW].eta));
 	 
         h11. Fill(GenParticle[myWl].pt);
-        h12. Fill(GenParticle[myWl].eta);
+        h12. Fill(abs(GenParticle[myWl].eta));
 	 
         h13. Fill(GenParticle[myWnu].pt);
-        h14. Fill(GenParticle[myWnu].eta);
+        h14. Fill(abs(GenParticle[myWnu].eta));
 	 
         h15. Fill(GenParticle[lastT].pt);
-        h16. Fill(GenParticle[lastT].eta);
+        h16. Fill(abs(GenParticle[lastT].eta));
 	
 	h17. Fill(recTmass);
         h18. Fill(tTmass);
@@ -657,7 +701,8 @@ h41. Fill(ltBdeltar);
 	  // ---------------------	  
 
 }
-
+float k=r/17000.00;
+cout<<k<<" sdadsad   "<<r<<endl;
   stream.close();
   ofile.close();
   //cout << "events: " << nevt << endl;
