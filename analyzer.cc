@@ -182,7 +182,8 @@ TH1F h38("wldeltar","W-Lepton Delta R; Delta R (rad);Events",50,0,5);
 TH1F h39("wneudeltar","W-Neutrino Delta R; Delta R (rad);Events",50,0,5);
 TH1F h40("ltwdeltar","Top-W Delta R; Delta R (rad);Events",50,0,5);
 TH1F h41("ltbdeltar","Top-B Delta R; Delta R (rad);Events",50,0,5);
-
+TH1F h80("lbdeltar","lb Delta R; Delta R (rad);Events",500,0,5);
+TH1F h81("ljdeltar","lj Delta R; Delta R (rad);Events",500,0,5);
 TH1F h42("tagjetdeltar"," Tagjet Delta R; Delta R ;Events",500,0,5);
 TH1F h43("tagjetdeltar<0.1"," Tagjet Delta R < 0.1; Delta R ;Events",500,0,5);
 TH1F h44("tagjetdeltar<0.3"," Tagjet Delta R < 0.3; Delta R ;Events",500,0,5);
@@ -564,7 +565,44 @@ GenParticle[mytW].pt << " - eta:" << GenParticle[mytW].eta << endl
                 if((ltWdeltaphi>3.14))
                 {
                 ltWdeltaphi=(6.28)-ltWdeltaphi ;
+
                 }
+//lep-jet deltaeta
+        float ljdeltaeta = ((GenParticle[myWl].eta)-(GenParticle[myj].eta));
+        if(ljdeltaeta < 0){ljdeltaeta = -ljdeltaeta;}
+//lep-jet deltaphi
+        float ljdeltaphi ;
+                 
+                if((GenParticle[myWl].phi)>(GenParticle[myj].phi))
+                {
+                         ljdeltaphi = ((GenParticle[myWl].phi)-(GenParticle[myj].phi));
+                }
+                if((GenParticle[myj].phi)>(GenParticle[myWl].phi))
+                {
+                ljdeltaphi=((GenParticle[myj].phi)-(GenParticle[myWl].phi));
+                }
+                if((ljdeltaphi>3.14))  
+                {
+                ljdeltaphi=(6.28)-ljdeltaphi ;
+}
+//lepbdeltaeta
+        float lbdeltaeta = ((GenParticle[mytb].eta)-(GenParticle[myWl].eta));
+        if(lbdeltaeta < 0){lbdeltaeta = -lbdeltaeta;}
+//lepbdeltaphi
+        float lbdeltaphi ;
+                 
+                if((GenParticle[mytb].phi)>(GenParticle[myWl].phi))
+                {
+                         lbdeltaphi = ((GenParticle[mytb].phi)-(GenParticle[myWl].phi));
+                }
+                if((GenParticle[myWl].phi)>(GenParticle[mytb].phi))
+                {
+                lbdeltaphi=((GenParticle[myWl].phi)-(GenParticle[mytb].phi));
+                }
+                if((lbdeltaphi>3.14))  
+                {
+                lbdeltaphi=(6.28)-lbdeltaphi ;
+}
 //lastTop-B deltaeta
         float ltBdeltaeta = ((GenParticle[mytb].eta)-(GenParticle[lastT].eta));
         if(ltBdeltaeta < 0){ltBdeltaeta = -ltBdeltaeta;}
@@ -596,6 +634,8 @@ GenParticle[mytW].pt << " - eta:" << GenParticle[mytW].eta << endl
 	float ltBdeltar= TMath::Sqrt((ltBdeltaphi*ltBdeltaphi)+(ltBdeltaeta*Wldeltaeta));
 	float recWmass = TMath::Sqrt((nulE*nulE)-(nulpx*nulpx)-(nulpy*nulpy)-(nulpz*nulpz));
         float tWmass = TMath::Sqrt((WE*WE)-(Wpx*Wpx)-(Wpy*Wpy)-(Wpz*Wpz)) ;
+      	float lbdeltar=TMath::Sqrt((lbdeltaphi*lbdeltaphi)+(lbdeltaeta*lbdeltaeta));
+        float ljdeltar= TMath::Sqrt((ljdeltaphi*ljdeltaphi)+(ljdeltaeta*ljdeltaeta));
 //	cout << "MASSW..........: " << GenParticle[mytW].mass  << "recWmass....: " << recWmass << "tWmass......: " << tWmass <<endl ;
 	
 //	 eta[mytb]=GenParticle[mytb].eta ;
@@ -629,8 +669,8 @@ GenParticle[mytW].pt << " - eta:" << GenParticle[mytW].eta << endl
 //int r ;
 	if( GenParticle[myWl].pt>20 && (abs(GenParticle[myWl].eta))<2.5 
 && GenParticle[myj].pt>20 && GenParticle[mytb].pt>20 && 
-GenMET[0].pt>20 && (abs(GenParticle[myj].eta))<4 && 
-(abs(GenParticle[mytb].eta))<4)
+GenMET[0].pt>20 && (abs(GenParticle[myj].eta))<4.5 && 
+(abs(GenParticle[mytb].eta))<4.5) // && (lbdeltar>0.4 )&& (ljdeltar>0.4))
 	{
 	h66. Fill(GenParticle[myWl].pt);
 //	int r ;
@@ -643,7 +683,8 @@ GenMET[0].pt>20 && (abs(GenParticle[myj].eta))<4 &&
 	h68. Fill(GenParticle[myWl].pt);
 	h69. Fill(abs(GenParticle[myWl].eta));
 	} 
-
+	h80.Fill(lbdeltar);
+	h81.Fill(ljdeltar);
 	h1. Fill(GenParticle[myT].pt);
 	h2. Fill(abs(GenParticle[myT].eta));
 	 
@@ -701,11 +742,13 @@ h41. Fill(ltBdeltar);
 	  // ---------------------	  
 
 }
+float t=(21.32/100.00) ;
 float k=r/17000.00;
+float p=k*t;
 cout<<k<<" sdadsad   "<<r<<endl;
   stream.close();
   ofile.close();
-  //cout << "events: " << nevt << endl;
+  cout << "efficiency: " <<p  << endl;
   return 0;
 }
 
